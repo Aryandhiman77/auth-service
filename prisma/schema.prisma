@@ -1,0 +1,156 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  TRANSGENDER
+}
+
+enum IdentityStatus {
+  PROVISIONING
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+  ARCHIVED
+}
+
+model Identity {
+  id           String @id @default(uuid(7)) @db.Uuid
+  username     String @unique @map("username")
+  email        String @unique
+  passwordHash String @map("password_hash")
+  phoneNumber  String @unique @map("phone_number") @db.VarChar(15)
+  gender       Gender
+
+  status IdentityStatus @default(PROVISIONING)
+
+  roleId String @map("role_id") @db.Uuid
+  role   Role   @relation(fields: [roleId], references: [id])
+
+  sessions Session[]
+
+  isActive            Boolean   @default(true) @map("is_active")
+  isEmailVerified     Boolean   @default(false) @map("is_email_verified")
+  isPhoneVerified     Boolean   @default(false) @map("is_phone_verified")
+  failedLoginAttempts Int       @default(0) @map("failed_login_attempts")
+  lockedUntil         DateTime? @map("locked_until")
+  lastLoginAt         DateTime? @map("last_login_at")
+
+  createdAt           DateTime             @default(now())
+  updatedAt           DateTime             @default(now()) @updatedAt @map("updated_at")
+  deletedAt           DateTime?            @map("deleted_at")
+  passwordResetTokens PasswordResetToken[]
+
+  @@index([roleId])
+  @@index([status])
+  @@index([email])
+  @@index([phoneNumber])
+  @@map("identities")
+}
+
+model Session {
+  id               String   @id @default(uuid(7)) @db.Uuid
+  identityId       String   @map("identity_id") @db.Uuid
+  identity         Identity @relation(fields: [identityId], references: [id], onDelete: Cascade)
+  refreshTokenHash String   @map("refresh_token_hash")
+
+  // device information
+  deviceName String? @map("device_name")
+  platform   String? @map("platform_name") // os.platform
+
+  // ip address 
+  ipAddress String? @map("ip_address")
+  userAgent String? @map("user_agent") // req.get('User-Agent')
+
+  // status
+  isRevoked Boolean   @default(false) @map("is_revoked")
+  revokedAt DateTime? @map("revoked_at")
+
+  // expiry
+  expiresAt DateTime @map("expires_at")
+
+  //audit
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([identityId])
+  @@index([expiresAt])
+  @@index([isRevoked])
+}
+
+model Role {
+  id          String  @id @default(uuid(7)) @db.Uuid
+  code        String  @unique @db.VarChar(50)
+  name        String  @db.VarChar(100)
+  description String?
+  isActive    Boolean @default(true) @map("is_active")
+  isSystem    Boolean @default(false) @map("is_system")
+
+  identities  Identity[]
+  permissions RolePermission[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("roles")
+}
+
+model Permission {
+  id   String @id @default(uuid(7)) @db.Uuid
+  code String @unique @db.VarChar(100)
+
+  module String @db.VarChar(50)
+  action String @db.VarChar(50)
+
+  name        String  @db.VarChar(100)
+  description String?
+
+  isActive Boolean @default(true) @map("is_active")
+  isSystem Boolean @default(true) @map("is_system")
+
+  roles RolePermission[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@unique([module, action])
+  @@index([module])
+  @@index([isActive])
+  @@map("permissions")
+}
+
+model RolePermission {
+  roleId       String @map("role_id") @db.Uuid
+  permissionId String @map("permission_id") @db.Uuid
+
+  role       Role       @relation(fields: [roleId], references: [id])
+  permission Permission @relation(fields: [permissionId], references: [id])
+
+  @@id([roleId, permissionId])
+  @@index([permissionId])
+  @@map("role_permissions")
+}
+
+model PasswordResetToken {
+  id             String   @id @default(uuid(7)) @db.Uuid
+  identityId     String   @db.Uuid
+  identity       Identity @relation(fields: [identityId], references: [id], onDelete: Cascade)
+  resetTokenHash String
+  expiresAt      DateTime
+  createdAt      DateTime @default(now())
+
+  @@index([identityId])
+  @@index([expiresAt])
+}
