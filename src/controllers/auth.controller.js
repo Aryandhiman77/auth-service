@@ -384,7 +384,6 @@ export const refreshSession = asyncHandler(async (req, res) => {
       },
       data: {
         refreshTokenHash: await argon2.hash(new_refresh_token),
-        expiresAt: expiry,
         ipAddress: req.ip,
       },
     });
@@ -619,6 +618,72 @@ export const getMe = asyncHandler(async (req, res) => {
     .json(ApiResponse.success("Profile fetched successfully.", identityData));
 });
 
+export const getSingleUserById = asyncHandler(async (req, res) => {
+  if (!req.params.id) {
+    throw new NotFoundError(
+      "User not found.",
+      "user not found",
+      "USER_NOT_FOUND",
+    );
+  }
+  const identity = await prisma.identity.findUnique({
+    where: {
+      id: req.params.id,
+    },
+    include: {
+      role: {
+        select: {
+          code: true,
+          permissions: {
+            select: {
+              permission: {
+                select: {
+                  id: true,
+                  code: true,
+                  isActive: true,
+                  isSystem: true,
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  });
+  if (!identity) {
+    throw new NotFoundError(
+      "User not found.",
+      "Invalid credentials",
+      "USER_NOT_FOUND",
+    );
+  }
+  if (identity.deletedAt) {
+    throw new BadRequestError(
+      "User is deleted.",
+      "user is deleted",
+      "USER_DELETED",
+    );
+  }
+
+  const permissions =
+    identity.role.permissions.map((item) => ({
+      code: item.permission.code,
+      id: item.permission.id,
+      isActive: item.permission.isActive,
+      isSystem: item.permission.isSystem,
+    })) || [];
+
+  const mutatedIdentity = {
+    ...identity,
+    role: identity.role.code,
+    permissions,
+  };
+  delete mutatedIdentity.passwordHash;
+  return res
+    .status(200)
+    .json(ApiResponse.success(`User found.`, mutatedIdentity));
+});
+
 export const changePassword = asyncHandler(async (req, res) => {
   const { email, username, oldPassword, newPassword } = req.data;
 
@@ -740,7 +805,7 @@ export const getRoles = asyncHandler(async (req, res) => {
       skip,
       orderBy: sorting,
     }),
-    prisma.role.count(),
+    prisma.role.count({ where: { ...req.role_filters } }),
   ]);
   return res
     .status(200)
@@ -821,7 +886,7 @@ export const updateRoleStatus = asyncHandler(async (req, res) => {
     );
 });
 
-export const getIdentityPermissions = asyncHandler(async (req, res) => {
+export const getRolePermissions = asyncHandler(async (req, res) => {
   if (!req.params?.id) {
     throw new NotFoundError(
       "Role not found.",
@@ -837,4 +902,70 @@ export const getIdentityPermissions = asyncHandler(async (req, res) => {
   return res
     .status(200)
     .json(ApiResponse.success("Permissions found.", permissions));
+});
+
+export const assignRolePermission = asyncHandler(async (req, res) => {
+  if (!req.params.id) {
+    throw new NotFoundError(
+      "Role not found.",
+      "role not found",
+      "ROLE_NOT_FOUND",
+    );
+  }
+  if (!req.data?.permissionIds?.length) {
+    throw new BadRequestError(
+      "select atleast one permission.",
+      "permissions missing",
+      "PERMISSIONS_MISSING",
+    );
+  }
+  const role = await prisma.role.findUnique({
+    where: { id: req.params.id },
+    select: {
+      id: true,
+      code: true,
+    },
+  });
+  if (!role) {
+    throw new NotFoundError(
+      "Role not found.",
+      "role not found",
+      "ROLE_NOT_FOUND",
+    );
+  }
+  if (role.code === "SUPER_ADMIN") {
+    throw new BadRequestError(
+      "Super Admin permissions cannot be modified.",
+      "Super Admin permissions cannot be modified.",
+      "FAILED_TO_UPDATE_SUPER_ADMIN_PERMISSION",
+    );
+  }
+
+  const updatedCount = await prisma.$transaction(async (tx) => {
+    await tx.rolePermission.deleteMany({
+      where: {
+        roleId: role.id,
+      },
+    });
+
+    await tx.rolePermission.createMany({
+      data: req.data.permissionIds.map((permissionId) => ({
+        roleId: role.id,
+        permissionId: permissionId,
+        assignedById: req.identity.id,
+      })),
+    });
+  });
+  if (!updatedCount) {
+    throw new BadRequestError(
+      "failed to update permissions.",
+      "failed to update permissions",
+      "FAILED_TO_UPDATE",
+    );
+  }
+  return res
+    .status(200)
+    .json(
+      ApiResponse.success(`${updatedCount} Permissions updated.`, permissions),
+    );
 });

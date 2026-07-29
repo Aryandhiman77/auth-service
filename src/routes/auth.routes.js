@@ -11,11 +11,13 @@ import {
   revokeIdentitySessions,
   createRole,
   getRoles,
+  getSingleUserById,
 } from "../controllers/auth.controller.js";
 import {
   loginValidation,
   forgotPasswordValidation,
   resetPasswordValidation,
+  changePasswordValidation,
 } from "../validations/auth.validations.js";
 import validate from "../helpers/validator.js";
 import tokenVerification from "../middlewares/tokenVerification.js";
@@ -35,7 +37,11 @@ authRoutes
 authRoutes.use(tokenVerification);
 authRoutes
   .get("/me", getMe)
-  .patch("/change-password", validate(resetPasswordValidation), changePassword);
+  .patch(
+    "/change-password",
+    validate(changePasswordValidation),
+    changePassword,
+  );
 
 // get all sessions
 // authRoutes.
@@ -43,4 +49,6 @@ authRoutes
   .get("/sessions", pagination, getIdentitySessions)
   .delete("/sessions", revokeIdentitySessions);
 
+//get single user by id.
+authRoutes.get("/:id", getSingleUserById);
 export default authRoutes;

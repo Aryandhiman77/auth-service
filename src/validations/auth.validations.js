@@ -113,6 +113,26 @@ export const forgotPasswordValidation = Joi.object({
   });
 
 export const resetPasswordValidation = Joi.object({
+  password: Joi.string()
+    .required()
+    .min(authConfig.password.minLength)
+    .max(authConfig.password.maxLength)
+    .pattern(/[a-z]/, "lowercase letter")
+    .pattern(/[A-Z]/, "uppercase letter")
+    .pattern(/[0-9]/, "number")
+    .pattern(/[^a-zA-Z0-9]/, "special character")
+    .label("New password")
+    .messages({
+      "string.base": "New password must be a string.",
+      "string.empty": "New password is required.",
+      "any.required": "New password is required.",
+      "string.min": `New password must contain at least ${authConfig.password.minLength} characters.`,
+      "string.max": `New password must contain no more than ${authConfig.password.maxLength} characters.`,
+      "string.pattern.name":
+        "New password must contain at least one uppercase letter, one lowercase letter, one number and one special character.",
+    }),
+}).required();
+export const changePasswordValidation = Joi.object({
   username: Joi.string().lowercase().trim().label("username").messages({
     "string.base": "username must be a string.",
     "string.empty": "username is required.",

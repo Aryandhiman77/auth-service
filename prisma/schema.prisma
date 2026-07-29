@@ -53,6 +53,9 @@ model Identity {
   deletedAt           DateTime?            @map("deleted_at")
   passwordResetTokens PasswordResetToken[]
 
+  assignedBy RolePermission[] @relation("assignedBy")
+  updatedBy  RolePermission[] @relation("updatedBy")
+
   @@index([roleId])
   @@index([status])
   @@index([email])
@@ -135,13 +138,42 @@ model RolePermission {
   roleId       String @map("role_id") @db.Uuid
   permissionId String @map("permission_id") @db.Uuid
 
+  assignedById String  @map("assigned_by") @db.Uuid
+  updatedById  String? @map("updated_by") @db.Uuid
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
   role       Role       @relation(fields: [roleId], references: [id])
   permission Permission @relation(fields: [permissionId], references: [id])
+  assignedBy Identity   @relation("assignedBy", fields: [assignedById], references: [id])
+  updatedBy  Identity?  @relation("updatedBy", fields: [updatedById], references: [id])
 
   @@id([roleId, permissionId])
   @@index([permissionId])
+  @@index([assignedById])
+  @@index([updatedById])
   @@map("role_permissions")
 }
+
+// enum PermissionEffect {
+//   ALLOW
+//   DENY
+// }
+
+// model IdentityPermission {
+//   identityId   String           @map("identity_id") @db.Uuid
+//   permissionId String           @map("permission_id") @db.Uuid
+//   assignedBy   String           @map("assigned_by") @db.Uuid
+//   effect       PermissionEffect
+//   reason       String?
+
+//   identity   Identity   @relation(fields: [identityId, assignedBy], references: [id])
+//   permission Permission @relation(fields: [permissionId], references: [id])
+
+//   @@id([identityId, permissionId])
+//   @@map("user_assigned_permissions")
+// }
 
 model PasswordResetToken {
   id             String   @id @default(uuid(7)) @db.Uuid

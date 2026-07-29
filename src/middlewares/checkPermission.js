@@ -16,12 +16,12 @@ export const checkPermission = (requiredPermissions = []) => {
         "IDENTITY_CONTEXT_MISSING",
       );
     }
-
-    const userPermissions = Array.isArray(identity.permissionCodes)
-      ? identity.permissionCodes
-      : Array.isArray(identity.permissions)
-        ? identity.permissions.map((permission) => permission.code)
-        : [];
+    const userActivePermissions = Array.isArray(req.identity.permissions)
+      ? identity.permissions?.filter((permit) => permit.isActive)
+      : [];
+    const userPermissions = Array.isArray(userActivePermissions)
+      ? userActivePermissions.map((permission) => permission.code)
+      : [];
 
     const hasAllPermissions = required.every((permissionCode) =>
       userPermissions.includes(permissionCode),

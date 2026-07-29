@@ -19,13 +19,20 @@ export const createRoleValidation = Joi.object({
         "role code must start with a letter and contain only uppercase letters, numbers and underscores.",
     }),
 
-  name: Joi.string().required().trim().min(2).max(100).label("name").messages({
-    "string.base": "role name must be a string.",
-    "string.empty": "role name is required.",
-    "any.required": "role name is required.",
-    "string.min": "role name must contain at least 2 characters.",
-    "string.max": "role name must contain no more than 100 characters.",
-  }),
+  name: Joi.string()
+    .lowercase()
+    .required()
+    .trim()
+    .min(2)
+    .max(100)
+    .label("name")
+    .messages({
+      "string.base": "role name must be a string.",
+      "string.empty": "role name is required.",
+      "any.required": "role name is required.",
+      "string.min": "role name must contain at least 2 characters.",
+      "string.max": "role name must contain no more than 100 characters.",
+    }),
 
   description: Joi.string()
     .trim()
@@ -68,3 +75,23 @@ export const updateRoleDetails = Joi.object({
   .messages({
     "any.required": "New Updation data is required",
   });
+
+export const assignRolePermissionsValidation = Joi.object({
+  permissionIds: Joi.array()
+    .items(
+      Joi.string()
+        .uuid({
+          version: ["uuidv4", "uuidv7"],
+        })
+        .required(),
+    )
+    .unique()
+    .required()
+    .label("permissionIds")
+    .messages({
+      "array.base": "permissionIds must be an array.",
+      "array.unique": "permissionIds must not contain duplicate values.",
+      "any.required": "permissionIds is required.",
+      "string.guid": "Every permissionId must be a valid UUID.",
+    }),
+}).required();

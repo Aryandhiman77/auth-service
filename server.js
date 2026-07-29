@@ -13,6 +13,7 @@ import { RedisStore } from "rate-limit-redis";
 import cookieParser from "cookie-parser";
 import errorHandler from "./src/middlewares/errorHandler.js";
 import roleRoutes from "./src/routes/roles.routes.js";
+import permissionRoutes from "./src/routes/permissions.route.js";
 
 const app = express();
 
@@ -41,7 +42,7 @@ app.use((req, res, next) => {
 
 const sensitiveEndpointRateLimiter = rateLimit({
   windowMs: 1000 * 60 * 5,
-  limit: 10,
+  limit: 20,
   standardHeaders: true,
   legacyHeaders: false,
   handler: (req, res) => {
@@ -54,6 +55,7 @@ const sensitiveEndpointRateLimiter = rateLimit({
 });
 app.use("/api/auth", sensitiveEndpointRateLimiter, authRoutes);
 app.use("/api/roles", roleRoutes);
+app.use("/api/permissions", permissionRoutes);
 app.use(errorHandler);
 app.listen(process.env.PORT, (error) => {
   if (error) {

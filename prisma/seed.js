@@ -12,13 +12,13 @@ async function main() {
   const permissions = await seedPermissions(prisma);
   const roles = await seedRoles(prisma);
 
+  await seedSuperAdmin(prisma, {
+    roles,
+  });
+
   await seedRolePermissions(prisma, {
     roles,
     permissions,
-  });
-
-  await seedSuperAdmin(prisma, {
-    roles,
   });
 
   console.log("\n✅ Identity Service database seeded successfully.\n");
