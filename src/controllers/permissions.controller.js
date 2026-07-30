@@ -51,17 +51,29 @@ export const getSinglePermissionById = asyncHandler(async (req, res) => {
 });
 
 export const getPermissionsByModulesGroup = asyncHandler(async (req, res) => {
-  const grouped = await prisma.$queryRaw`
-SELECT json_object_agg(module, permissions)
-FROM (
-    SELECT
-        module,
-        json_agg(json_build_object('id', id, 'code', code)) AS permissions
-    FROM permissions
-    GROUP BY module
-
-) t;
-
-`;
-  res.send(grouped);
+  const permissions = await prisma.permission.findMany({
+    where: {
+      isActive: true,
+    },
+    select: {
+      id: true,
+      code: true,
+      name: true,
+      module: true,
+    },
+    orderBy: {
+      module: "asc",
+    },
+  });
+  const groupedPermissions = permissions.reduce((acc, permission) => {
+    (acc[permission.module] ??= []).push({
+      id: permission.id,
+      code: permission.code,
+      name: permission.name,
+    });
+    return acc;
+  }, {});
+  return res
+    .status(200)
+    .json(ApiResponse.success(`Permission found.`, groupedPermissions));
 });

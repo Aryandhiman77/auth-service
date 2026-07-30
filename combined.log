@@ -5263,3 +5263,291 @@
 {"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-29T04:47:20.583Z"}
 {"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-29T04:47:41.969Z"}
 {"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-29T04:47:48.809Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T09:32:04.418Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T09:33:02.988Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T09:36:49.008Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T09:38:18.520Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T09:39:53.802Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T09:40:16.894Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T09:41:22.632Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T09:42:53.414Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T09:42:57.838Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T09:43:06.146Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T09:43:09.596Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T09:43:12.518Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T09:43:15.178Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T09:43:37.012Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T09:43:50.480Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T09:56:24.667Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T09:56:52.549Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T09:57:27.441Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T09:57:33.291Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T09:57:34.556Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T09:57:39.688Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T09:57:45.508Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:02:25.299Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:02:32.246Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:07:02.801Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:07:09.549Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:07:26.776Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:07:32.078Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:07:32.487Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:07:41.993Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:08:15.296Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:08:16.787Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:08:21.902Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:08:26.680Z"}
+{"level":"info","message":"Received GET request to/api/permissions?search=aeps","service":"auth-service","timestamp":"2026-07-30T10:08:34.717Z"}
+{"level":"info","message":"Request body \nundefined","service":"auth-service","timestamp":"2026-07-30T10:08:34.718Z"}
+{"level":"info","message":" executing at path : /api/permissions?search=aeps","service":"auth-service","timestamp":"2026-07-30T10:08:34.726Z"}
+{"errorCode":"UNAUTHORIZED","errors":null,"level":"error","message":" user api error at path : /api/permissions?search=aeps No authorization token provided.","service":"auth-service","stack":"Error: No authorization token provided.\n    at file:///Users/aryan/Desktop/microservices%20learnings/microservices_implementation/auth-service/src/middlewares/tokenVerification.js:10:11\n    at file:///Users/aryan/Desktop/microservices%20learnings/microservices_implementation/auth-service/src/helpers/asyncHandler.js:6:18\n    at Layer.handleRequest (/Users/aryan/Desktop/microservices learnings/microservices_implementation/auth-service/node_modules/router/lib/layer.js:152:17)\n    at trimPrefix (/Users/aryan/Desktop/microservices learnings/microservices_implementation/auth-service/node_modules/router/index.js:342:13)\n    at /Users/aryan/Desktop/microservices learnings/microservices_implementation/auth-service/node_modules/router/index.js:297:9\n    at processParams (/Users/aryan/Desktop/microservices learnings/microservices_implementation/auth-service/node_modules/router/index.js:582:12)\n    at next (/Users/aryan/Desktop/microservices learnings/microservices_implementation/auth-service/node_modules/router/index.js:291:5)\n    at Function.handle (/Users/aryan/Desktop/microservices learnings/microservices_implementation/auth-service/node_modules/router/index.js:186:3)\n    at router (/Users/aryan/Desktop/microservices learnings/microservices_implementation/auth-service/node_modules/router/index.js:60:12)\n    at Layer.handleRequest (/Users/aryan/Desktop/microservices learnings/microservices_implementation/auth-service/node_modules/router/lib/layer.js:152:17)","statusCode":401,"timestamp":"2026-07-30T10:08:34.727Z"}
+{"level":"error","message":"Error: No authorization token provided.\n    at file:///Users/aryan/Desktop/microservices%20learnings/microservices_implementation/auth-service/src/middlewares/tokenVerification.js:10:11\n    at file:///Users/aryan/Desktop/microservices%20learnings/microservices_implementation/auth-service/src/helpers/asyncHandler.js:6:18\n    at Layer.handleRequest (/Users/aryan/Desktop/microservices learnings/microservices_implementation/auth-service/node_modules/router/lib/layer.js:152:17)\n    at trimPrefix (/Users/aryan/Desktop/microservices learnings/microservices_implementation/auth-service/node_modules/router/index.js:342:13)\n    at /Users/aryan/Desktop/microservices learnings/microservices_implementation/auth-service/node_modules/router/index.js:297:9\n    at processParams (/Users/aryan/Desktop/microservices learnings/microservices_implementation/auth-service/node_modules/router/index.js:582:12)\n    at next (/Users/aryan/Desktop/microservices learnings/microservices_implementation/auth-service/node_modules/router/index.js:291:5)\n    at Function.handle (/Users/aryan/Desktop/microservices learnings/microservices_implementation/auth-service/node_modules/router/index.js:186:3)\n    at router (/Users/aryan/Desktop/microservices learnings/microservices_implementation/auth-service/node_modules/router/index.js:60:12)\n    at Layer.handleRequest (/Users/aryan/Desktop/microservices learnings/microservices_implementation/auth-service/node_modules/router/lib/layer.js:152:17)","service":"auth-service","timestamp":"2026-07-30T10:08:34.729Z"}
+{"level":"info","message":"Received GET request to/api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:08:39.121Z"}
+{"level":"info","message":"Request body \nundefined","service":"auth-service","timestamp":"2026-07-30T10:08:39.122Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:08:39.124Z"}
+{"errorCode":"UNAUTHORIZED","errors":null,"level":"error","message":" user api error at path : /api/permissions/modules No authorization token provided.","service":"auth-service","stack":"Error: No authorization token provided.\n    at file:///Users/aryan/Desktop/microservices%20learnings/microservices_implementation/auth-service/src/middlewares/tokenVerification.js:10:11\n    at file:///Users/aryan/Desktop/microservices%20learnings/microservices_implementation/auth-service/src/helpers/asyncHandler.js:6:18\n    at Layer.handleRequest (/Users/aryan/Desktop/microservices learnings/microservices_implementation/auth-service/node_modules/router/lib/layer.js:152:17)\n    at trimPrefix (/Users/aryan/Desktop/microservices learnings/microservices_implementation/auth-service/node_modules/router/index.js:342:13)\n    at /Users/aryan/Desktop/microservices learnings/microservices_implementation/auth-service/node_modules/router/index.js:297:9\n    at processParams (/Users/aryan/Desktop/microservices learnings/microservices_implementation/auth-service/node_modules/router/index.js:582:12)\n    at next (/Users/aryan/Desktop/microservices learnings/microservices_implementation/auth-service/node_modules/router/index.js:291:5)\n    at Function.handle (/Users/aryan/Desktop/microservices learnings/microservices_implementation/auth-service/node_modules/router/index.js:186:3)\n    at router (/Users/aryan/Desktop/microservices learnings/microservices_implementation/auth-service/node_modules/router/index.js:60:12)\n    at Layer.handleRequest (/Users/aryan/Desktop/microservices learnings/microservices_implementation/auth-service/node_modules/router/lib/layer.js:152:17)","statusCode":401,"timestamp":"2026-07-30T10:08:39.125Z"}
+{"level":"error","message":"Error: No authorization token provided.\n    at file:///Users/aryan/Desktop/microservices%20learnings/microservices_implementation/auth-service/src/middlewares/tokenVerification.js:10:11\n    at file:///Users/aryan/Desktop/microservices%20learnings/microservices_implementation/auth-service/src/helpers/asyncHandler.js:6:18\n    at Layer.handleRequest (/Users/aryan/Desktop/microservices learnings/microservices_implementation/auth-service/node_modules/router/lib/layer.js:152:17)\n    at trimPrefix (/Users/aryan/Desktop/microservices learnings/microservices_implementation/auth-service/node_modules/router/index.js:342:13)\n    at /Users/aryan/Desktop/microservices learnings/microservices_implementation/auth-service/node_modules/router/index.js:297:9\n    at processParams (/Users/aryan/Desktop/microservices learnings/microservices_implementation/auth-service/node_modules/router/index.js:582:12)\n    at next (/Users/aryan/Desktop/microservices learnings/microservices_implementation/auth-service/node_modules/router/index.js:291:5)\n    at Function.handle (/Users/aryan/Desktop/microservices learnings/microservices_implementation/auth-service/node_modules/router/index.js:186:3)\n    at router (/Users/aryan/Desktop/microservices learnings/microservices_implementation/auth-service/node_modules/router/index.js:60:12)\n    at Layer.handleRequest (/Users/aryan/Desktop/microservices learnings/microservices_implementation/auth-service/node_modules/router/lib/layer.js:152:17)","service":"auth-service","timestamp":"2026-07-30T10:08:39.125Z"}
+{"level":"info","message":"Received GET request to/api/auth/refresh-session","service":"auth-service","timestamp":"2026-07-30T10:08:42.970Z"}
+{"level":"info","message":"Request body \nundefined","service":"auth-service","timestamp":"2026-07-30T10:08:42.972Z"}
+{"level":"info","message":" executing at path : /api/auth/refresh-session","service":"auth-service","timestamp":"2026-07-30T10:08:42.980Z"}
+{"level":"info","message":"Received GET request to/api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:08:45.459Z"}
+{"level":"info","message":"Request body \nundefined","service":"auth-service","timestamp":"2026-07-30T10:08:45.459Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:08:45.460Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:08:45.480Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:08:45.480Z"}
+{"level":"info","message":"Received GET request to/api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:08:48.168Z"}
+{"level":"info","message":"Request body \nundefined","service":"auth-service","timestamp":"2026-07-30T10:08:48.168Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:08:48.169Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:08:48.178Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:08:48.178Z"}
+{"level":"info","message":"Received GET request to/api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:08:53.114Z"}
+{"level":"info","message":"Request body \nundefined","service":"auth-service","timestamp":"2026-07-30T10:08:53.116Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:08:53.118Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:08:53.129Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:08:53.130Z"}
+{"level":"info","message":"Received GET request to/api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:08:53.790Z"}
+{"level":"info","message":"Request body \nundefined","service":"auth-service","timestamp":"2026-07-30T10:08:53.790Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:08:53.791Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:08:53.799Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:08:53.799Z"}
+{"level":"info","message":"Received GET request to/api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:08:54.376Z"}
+{"level":"info","message":"Request body \nundefined","service":"auth-service","timestamp":"2026-07-30T10:08:54.377Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:08:54.378Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:08:54.385Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:08:54.386Z"}
+{"level":"info","message":"Received GET request to/api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:08:54.984Z"}
+{"level":"info","message":"Request body \nundefined","service":"auth-service","timestamp":"2026-07-30T10:08:54.985Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:08:54.988Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:08:54.994Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:08:54.994Z"}
+{"level":"info","message":"Received GET request to/api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:08:55.966Z"}
+{"level":"info","message":"Request body \nundefined","service":"auth-service","timestamp":"2026-07-30T10:08:55.966Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:08:55.967Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:08:55.971Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:08:55.971Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:10:11.224Z"}
+{"level":"info","message":"Received GET request to/api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:10:11.710Z"}
+{"level":"info","message":"Request body \nundefined","service":"auth-service","timestamp":"2026-07-30T10:10:11.711Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:10:11.714Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:10:11.850Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:10:11.850Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:10:21.239Z"}
+{"level":"info","message":"Received GET request to/api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:10:22.458Z"}
+{"level":"info","message":"Request body \nundefined","service":"auth-service","timestamp":"2026-07-30T10:10:22.459Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:10:22.462Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:10:22.574Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:10:22.574Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:10:32.029Z"}
+{"level":"info","message":"Received GET request to/api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:10:32.922Z"}
+{"level":"info","message":"Request body \nundefined","service":"auth-service","timestamp":"2026-07-30T10:10:32.923Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:10:32.926Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:10:33.028Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:10:33.028Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:10:39.786Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:10:43.002Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:22:21.734Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:22:27.717Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:22:32.084Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:22:32.988Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:22:35.244Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:23:03.423Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:23:16.393Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:23:18.315Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:23:20.895Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:23:27.868Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:24:19.866Z"}
+{"level":"info","message":"Received GET request to/api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:24:20.610Z"}
+{"level":"info","message":"Request body \nundefined","service":"auth-service","timestamp":"2026-07-30T10:24:20.610Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:24:20.613Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:24:20.746Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:24:20.746Z"}
+{"level":"error","message":" user api error at path : /api/permissions/modules prisma.permission.findMany(...)?.map is not a function","service":"auth-service","stack":"TypeError: prisma.permission.findMany(...)?.map is not a function\n    at file:///Users/aryan/Desktop/microservices%20learnings/microservices_implementation/auth-service/src/controllers/permissions.controller.js:61:7\n    at file:///Users/aryan/Desktop/microservices%20learnings/microservices_implementation/auth-service/src/helpers/asyncHandler.js:6:18\n    at Layer.handleRequest (/Users/aryan/Desktop/microservices learnings/microservices_implementation/auth-service/node_modules/router/lib/layer.js:152:17)\n    at next (/Users/aryan/Desktop/microservices learnings/microservices_implementation/auth-service/node_modules/router/lib/route.js:157:13)\n    at file:///Users/aryan/Desktop/microservices%20learnings/microservices_implementation/auth-service/src/middlewares/checkPermission.js:38:12\n    at file:///Users/aryan/Desktop/microservices%20learnings/microservices_implementation/auth-service/src/helpers/asyncHandler.js:6:18\n    at Layer.handleRequest (/Users/aryan/Desktop/microservices learnings/microservices_implementation/auth-service/node_modules/router/lib/layer.js:152:17)\n    at next (/Users/aryan/Desktop/microservices learnings/microservices_implementation/auth-service/node_modules/router/lib/route.js:157:13)\n    at Route.dispatch (/Users/aryan/Desktop/microservices learnings/microservices_implementation/auth-service/node_modules/router/lib/route.js:117:3)\n    at handle (/Users/aryan/Desktop/microservices learnings/microservices_implementation/auth-service/node_modules/router/index.js:435:11)","timestamp":"2026-07-30T10:24:20.746Z"}
+{"level":"error","message":"TypeError: prisma.permission.findMany(...)?.map is not a function\n    at file:///Users/aryan/Desktop/microservices%20learnings/microservices_implementation/auth-service/src/controllers/permissions.controller.js:61:7\n    at file:///Users/aryan/Desktop/microservices%20learnings/microservices_implementation/auth-service/src/helpers/asyncHandler.js:6:18\n    at Layer.handleRequest (/Users/aryan/Desktop/microservices learnings/microservices_implementation/auth-service/node_modules/router/lib/layer.js:152:17)\n    at next (/Users/aryan/Desktop/microservices learnings/microservices_implementation/auth-service/node_modules/router/lib/route.js:157:13)\n    at file:///Users/aryan/Desktop/microservices%20learnings/microservices_implementation/auth-service/src/middlewares/checkPermission.js:38:12\n    at file:///Users/aryan/Desktop/microservices%20learnings/microservices_implementation/auth-service/src/helpers/asyncHandler.js:6:18\n    at Layer.handleRequest (/Users/aryan/Desktop/microservices learnings/microservices_implementation/auth-service/node_modules/router/lib/layer.js:152:17)\n    at next (/Users/aryan/Desktop/microservices learnings/microservices_implementation/auth-service/node_modules/router/lib/route.js:157:13)\n    at Route.dispatch (/Users/aryan/Desktop/microservices learnings/microservices_implementation/auth-service/node_modules/router/lib/route.js:117:3)\n    at handle (/Users/aryan/Desktop/microservices learnings/microservices_implementation/auth-service/node_modules/router/index.js:435:11)","service":"auth-service","timestamp":"2026-07-30T10:24:20.747Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:24:28.874Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:24:30.147Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:24:33.030Z"}
+{"level":"info","message":"Received GET request to/api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:24:34.668Z"}
+{"level":"info","message":"Request body \nundefined","service":"auth-service","timestamp":"2026-07-30T10:24:34.670Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:24:34.681Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:24:34.836Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:24:34.837Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:24:40.001Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:24:44.513Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:24:46.698Z"}
+{"level":"info","message":"Received GET request to/api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:24:47.707Z"}
+{"level":"info","message":"Request body \nundefined","service":"auth-service","timestamp":"2026-07-30T10:24:47.708Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:24:47.709Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:24:47.815Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:24:47.815Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:24:53.000Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:24:57.610Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:25:01.370Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:25:06.723Z"}
+{"level":"info","message":"Received GET request to/api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:25:07.991Z"}
+{"level":"info","message":"Request body \nundefined","service":"auth-service","timestamp":"2026-07-30T10:25:07.992Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:25:07.994Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:25:08.097Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:25:08.098Z"}
+{"level":"error","message":" user api error at path : /api/permissions/modules prisma.permission.findMany(...).map is not a function","service":"auth-service","stack":"TypeError: prisma.permission.findMany(...).map is not a function\n    at file:///Users/aryan/Desktop/microservices%20learnings/microservices_implementation/auth-service/src/controllers/permissions.controller.js:61:6\n    at file:///Users/aryan/Desktop/microservices%20learnings/microservices_implementation/auth-service/src/helpers/asyncHandler.js:6:18\n    at Layer.handleRequest (/Users/aryan/Desktop/microservices learnings/microservices_implementation/auth-service/node_modules/router/lib/layer.js:152:17)\n    at next (/Users/aryan/Desktop/microservices learnings/microservices_implementation/auth-service/node_modules/router/lib/route.js:157:13)\n    at file:///Users/aryan/Desktop/microservices%20learnings/microservices_implementation/auth-service/src/middlewares/checkPermission.js:38:12\n    at file:///Users/aryan/Desktop/microservices%20learnings/microservices_implementation/auth-service/src/helpers/asyncHandler.js:6:18\n    at Layer.handleRequest (/Users/aryan/Desktop/microservices learnings/microservices_implementation/auth-service/node_modules/router/lib/layer.js:152:17)\n    at next (/Users/aryan/Desktop/microservices learnings/microservices_implementation/auth-service/node_modules/router/lib/route.js:157:13)\n    at Route.dispatch (/Users/aryan/Desktop/microservices learnings/microservices_implementation/auth-service/node_modules/router/lib/route.js:117:3)\n    at handle (/Users/aryan/Desktop/microservices learnings/microservices_implementation/auth-service/node_modules/router/index.js:435:11)","timestamp":"2026-07-30T10:25:08.098Z"}
+{"level":"error","message":"TypeError: prisma.permission.findMany(...).map is not a function\n    at file:///Users/aryan/Desktop/microservices%20learnings/microservices_implementation/auth-service/src/controllers/permissions.controller.js:61:6\n    at file:///Users/aryan/Desktop/microservices%20learnings/microservices_implementation/auth-service/src/helpers/asyncHandler.js:6:18\n    at Layer.handleRequest (/Users/aryan/Desktop/microservices learnings/microservices_implementation/auth-service/node_modules/router/lib/layer.js:152:17)\n    at next (/Users/aryan/Desktop/microservices learnings/microservices_implementation/auth-service/node_modules/router/lib/route.js:157:13)\n    at file:///Users/aryan/Desktop/microservices%20learnings/microservices_implementation/auth-service/src/middlewares/checkPermission.js:38:12\n    at file:///Users/aryan/Desktop/microservices%20learnings/microservices_implementation/auth-service/src/helpers/asyncHandler.js:6:18\n    at Layer.handleRequest (/Users/aryan/Desktop/microservices learnings/microservices_implementation/auth-service/node_modules/router/lib/layer.js:152:17)\n    at next (/Users/aryan/Desktop/microservices learnings/microservices_implementation/auth-service/node_modules/router/lib/route.js:157:13)\n    at Route.dispatch (/Users/aryan/Desktop/microservices learnings/microservices_implementation/auth-service/node_modules/router/lib/route.js:117:3)\n    at handle (/Users/aryan/Desktop/microservices learnings/microservices_implementation/auth-service/node_modules/router/index.js:435:11)","service":"auth-service","timestamp":"2026-07-30T10:25:08.098Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:25:11.053Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:25:11.519Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:25:14.016Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:25:15.845Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:25:22.679Z"}
+{"level":"info","message":"Received GET request to/api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:25:24.470Z"}
+{"level":"info","message":"Request body \nundefined","service":"auth-service","timestamp":"2026-07-30T10:25:24.471Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:25:24.473Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:25:24.584Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:25:24.584Z"}
+{"level":"info","message":"Received GET request to/api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:25:26.145Z"}
+{"level":"info","message":"Request body \nundefined","service":"auth-service","timestamp":"2026-07-30T10:25:26.145Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:25:26.148Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:25:26.157Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:25:26.157Z"}
+{"level":"info","message":"Received GET request to/api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:25:27.122Z"}
+{"level":"info","message":"Request body \nundefined","service":"auth-service","timestamp":"2026-07-30T10:25:27.123Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:25:27.124Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:25:27.136Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:25:27.136Z"}
+{"level":"info","message":"Received GET request to/api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:25:27.822Z"}
+{"level":"info","message":"Request body \nundefined","service":"auth-service","timestamp":"2026-07-30T10:25:27.823Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:25:27.824Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:25:27.831Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:25:27.832Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:25:33.324Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:26:16.979Z"}
+{"level":"info","message":"Received GET request to/api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:26:18.320Z"}
+{"level":"info","message":"Request body \nundefined","service":"auth-service","timestamp":"2026-07-30T10:26:18.321Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:26:18.323Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:26:18.429Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:26:18.429Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:27:16.538Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:27:21.039Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:27:22.428Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:27:24.024Z"}
+{"level":"info","message":"Received GET request to/api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:27:25.883Z"}
+{"level":"info","message":"Request body \nundefined","service":"auth-service","timestamp":"2026-07-30T10:27:25.884Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:27:25.887Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:27:26.048Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:27:26.048Z"}
+{"level":"info","message":"Received GET request to/api/permissions?search=aeps","service":"auth-service","timestamp":"2026-07-30T10:27:46.656Z"}
+{"level":"info","message":"Request body \nundefined","service":"auth-service","timestamp":"2026-07-30T10:27:46.657Z"}
+{"level":"info","message":" executing at path : /api/permissions?search=aeps","service":"auth-service","timestamp":"2026-07-30T10:27:46.662Z"}
+{"level":"info","message":" executing at path : /api/permissions?search=aeps","service":"auth-service","timestamp":"2026-07-30T10:27:46.707Z"}
+{"level":"info","message":" executing at path : /api/permissions?search=aeps","service":"auth-service","timestamp":"2026-07-30T10:27:46.708Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:31:54.205Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:32:02.229Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:32:06.780Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:32:09.458Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:32:13.273Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:32:14.609Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:32:19.834Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:32:28.749Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:32:30.258Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:32:31.136Z"}
+{"level":"info","message":"Received GET request to/api/permissions?search=aeps","service":"auth-service","timestamp":"2026-07-30T10:32:33.653Z"}
+{"level":"info","message":"Request body \nundefined","service":"auth-service","timestamp":"2026-07-30T10:32:33.654Z"}
+{"level":"info","message":" executing at path : /api/permissions?search=aeps","service":"auth-service","timestamp":"2026-07-30T10:32:33.658Z"}
+{"level":"info","message":" executing at path : /api/permissions?search=aeps","service":"auth-service","timestamp":"2026-07-30T10:32:33.793Z"}
+{"level":"info","message":" executing at path : /api/permissions?search=aeps","service":"auth-service","timestamp":"2026-07-30T10:32:33.793Z"}
+{"level":"info","message":"Received GET request to/api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:32:37.753Z"}
+{"level":"info","message":"Request body \nundefined","service":"auth-service","timestamp":"2026-07-30T10:32:37.753Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:32:37.756Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:32:37.766Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:32:37.766Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:35:14.017Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:35:22.569Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:36:42.453Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:36:43.943Z"}
+{"level":"info","message":"Received GET request to/api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:36:44.446Z"}
+{"level":"info","message":"Request body \nundefined","service":"auth-service","timestamp":"2026-07-30T10:36:44.447Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:36:44.451Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:36:44.595Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:36:44.596Z"}
+{"level":"error","message":" user api error at path : /api/permissions/modules Cannot read properties of undefined (reading 'AEPS')","service":"auth-service","stack":"TypeError: Cannot read properties of undefined (reading 'AEPS')\n    at file:///Users/aryan/Desktop/microservices%20learnings/microservices_implementation/auth-service/src/controllers/permissions.controller.js:69:26\n    at Array.reduce (<anonymous>)\n    at file:///Users/aryan/Desktop/microservices%20learnings/microservices_implementation/auth-service/src/controllers/permissions.controller.js:68:42\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async file:///Users/aryan/Desktop/microservices%20learnings/microservices_implementation/auth-service/src/helpers/asyncHandler.js:6:12","timestamp":"2026-07-30T10:36:44.604Z"}
+{"level":"error","message":"TypeError: Cannot read properties of undefined (reading 'AEPS')\n    at file:///Users/aryan/Desktop/microservices%20learnings/microservices_implementation/auth-service/src/controllers/permissions.controller.js:69:26\n    at Array.reduce (<anonymous>)\n    at file:///Users/aryan/Desktop/microservices%20learnings/microservices_implementation/auth-service/src/controllers/permissions.controller.js:68:42\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async file:///Users/aryan/Desktop/microservices%20learnings/microservices_implementation/auth-service/src/helpers/asyncHandler.js:6:12","service":"auth-service","timestamp":"2026-07-30T10:36:44.604Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:36:47.558Z"}
+{"level":"info","message":"Received GET request to/api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:36:48.359Z"}
+{"level":"info","message":"Request body \nundefined","service":"auth-service","timestamp":"2026-07-30T10:36:48.360Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:36:48.362Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:36:48.469Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:36:48.469Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:37:20.573Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:37:23.027Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:37:26.257Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:37:27.449Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:37:37.423Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:37:42.228Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:37:44.686Z"}
+{"level":"info","message":"Received GET request to/api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:37:45.674Z"}
+{"level":"info","message":"Request body \nundefined","service":"auth-service","timestamp":"2026-07-30T10:37:45.675Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:37:45.678Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:37:45.783Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:37:45.784Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:37:51.676Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:37:55.962Z"}
+{"level":"info","message":"Received GET request to/api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:37:56.419Z"}
+{"level":"info","message":"Request body \nundefined","service":"auth-service","timestamp":"2026-07-30T10:37:56.420Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:37:56.422Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:37:56.523Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:37:56.524Z"}
+{"level":"error","message":" user api error at path : /api/permissions/modules groupedPermissions is not iterable","service":"auth-service","stack":"TypeError: groupedPermissions is not iterable\n    at file:///Users/aryan/Desktop/microservices%20learnings/microservices_implementation/auth-service/src/controllers/permissions.controller.js:80:30\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async file:///Users/aryan/Desktop/microservices%20learnings/microservices_implementation/auth-service/src/helpers/asyncHandler.js:6:12","timestamp":"2026-07-30T10:37:56.530Z"}
+{"level":"error","message":"TypeError: groupedPermissions is not iterable\n    at file:///Users/aryan/Desktop/microservices%20learnings/microservices_implementation/auth-service/src/controllers/permissions.controller.js:80:30\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async file:///Users/aryan/Desktop/microservices%20learnings/microservices_implementation/auth-service/src/helpers/asyncHandler.js:6:12","service":"auth-service","timestamp":"2026-07-30T10:37:56.530Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:38:04.107Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:38:09.132Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:38:11.861Z"}
+{"level":"info","message":"Received GET request to/api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:38:12.778Z"}
+{"level":"info","message":"Request body \nundefined","service":"auth-service","timestamp":"2026-07-30T10:38:12.779Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:38:12.784Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:38:12.905Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:38:12.905Z"}
+{"level":"error","message":" user api error at path : /api/permissions/modules object is not defined","service":"auth-service","stack":"ReferenceError: object is not defined\n    at file:///Users/aryan/Desktop/microservices%20learnings/microservices_implementation/auth-service/src/controllers/permissions.controller.js:76:30\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async file:///Users/aryan/Desktop/microservices%20learnings/microservices_implementation/auth-service/src/helpers/asyncHandler.js:6:12","timestamp":"2026-07-30T10:38:12.911Z"}
+{"level":"error","message":"ReferenceError: object is not defined\n    at file:///Users/aryan/Desktop/microservices%20learnings/microservices_implementation/auth-service/src/controllers/permissions.controller.js:76:30\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async file:///Users/aryan/Desktop/microservices%20learnings/microservices_implementation/auth-service/src/helpers/asyncHandler.js:6:12","service":"auth-service","timestamp":"2026-07-30T10:38:12.911Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:38:15.237Z"}
+{"level":"info","message":"Received GET request to/api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:38:15.868Z"}
+{"level":"info","message":"Request body \nundefined","service":"auth-service","timestamp":"2026-07-30T10:38:15.869Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:38:15.871Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:38:15.988Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:38:15.988Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:38:25.822Z"}
+{"level":"info","message":"Received GET request to/api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:38:26.761Z"}
+{"level":"info","message":"Request body \nundefined","service":"auth-service","timestamp":"2026-07-30T10:38:26.762Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:38:26.764Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:38:26.872Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:38:26.872Z"}
+{"level":"error","message":" user api error at path : /api/permissions/modules groupedPermissions is not iterable","service":"auth-service","stack":"TypeError: groupedPermissions is not iterable\n    at file:///Users/aryan/Desktop/microservices%20learnings/microservices_implementation/auth-service/src/controllers/permissions.controller.js:76:30\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async file:///Users/aryan/Desktop/microservices%20learnings/microservices_implementation/auth-service/src/helpers/asyncHandler.js:6:12","timestamp":"2026-07-30T10:38:26.881Z"}
+{"level":"error","message":"TypeError: groupedPermissions is not iterable\n    at file:///Users/aryan/Desktop/microservices%20learnings/microservices_implementation/auth-service/src/controllers/permissions.controller.js:76:30\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async file:///Users/aryan/Desktop/microservices%20learnings/microservices_implementation/auth-service/src/helpers/asyncHandler.js:6:12","service":"auth-service","timestamp":"2026-07-30T10:38:26.881Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:38:31.791Z"}
+{"level":"info","message":"Received GET request to/api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:38:33.690Z"}
+{"level":"info","message":"Request body \nundefined","service":"auth-service","timestamp":"2026-07-30T10:38:33.691Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:38:33.693Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:38:33.800Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:38:33.801Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:38:39.524Z"}
+{"level":"info","message":"Received GET request to/api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:39:34.137Z"}
+{"level":"info","message":"Request body \nundefined","service":"auth-service","timestamp":"2026-07-30T10:39:34.138Z"}
+{"level":"info","message":" executing at path : /api/permissions/modules","service":"auth-service","timestamp":"2026-07-30T10:39:34.140Z"}
+{"errorCode":"UNAUTHORIZED","errors":null,"level":"error","message":" user api error at path : /api/permissions/modules No authorization token provided.","service":"auth-service","stack":"Error: No authorization token provided.\n    at file:///Users/aryan/Desktop/microservices%20learnings/microservices_implementation/auth-service/src/middlewares/tokenVerification.js:10:11\n    at file:///Users/aryan/Desktop/microservices%20learnings/microservices_implementation/auth-service/src/helpers/asyncHandler.js:6:18\n    at Layer.handleRequest (/Users/aryan/Desktop/microservices learnings/microservices_implementation/auth-service/node_modules/router/lib/layer.js:152:17)\n    at trimPrefix (/Users/aryan/Desktop/microservices learnings/microservices_implementation/auth-service/node_modules/router/index.js:342:13)\n    at /Users/aryan/Desktop/microservices learnings/microservices_implementation/auth-service/node_modules/router/index.js:297:9\n    at processParams (/Users/aryan/Desktop/microservices learnings/microservices_implementation/auth-service/node_modules/router/index.js:582:12)\n    at next (/Users/aryan/Desktop/microservices learnings/microservices_implementation/auth-service/node_modules/router/index.js:291:5)\n    at Function.handle (/Users/aryan/Desktop/microservices learnings/microservices_implementation/auth-service/node_modules/router/index.js:186:3)\n    at router (/Users/aryan/Desktop/microservices learnings/microservices_implementation/auth-service/node_modules/router/index.js:60:12)\n    at Layer.handleRequest (/Users/aryan/Desktop/microservices learnings/microservices_implementation/auth-service/node_modules/router/lib/layer.js:152:17)","statusCode":401,"timestamp":"2026-07-30T10:39:34.141Z"}
+{"level":"error","message":"Error: No authorization token provided.\n    at file:///Users/aryan/Desktop/microservices%20learnings/microservices_implementation/auth-service/src/middlewares/tokenVerification.js:10:11\n    at file:///Users/aryan/Desktop/microservices%20learnings/microservices_implementation/auth-service/src/helpers/asyncHandler.js:6:18\n    at Layer.handleRequest (/Users/aryan/Desktop/microservices learnings/microservices_implementation/auth-service/node_modules/router/lib/layer.js:152:17)\n    at trimPrefix (/Users/aryan/Desktop/microservices learnings/microservices_implementation/auth-service/node_modules/router/index.js:342:13)\n    at /Users/aryan/Desktop/microservices learnings/microservices_implementation/auth-service/node_modules/router/index.js:297:9\n    at processParams (/Users/aryan/Desktop/microservices learnings/microservices_implementation/auth-service/node_modules/router/index.js:582:12)\n    at next (/Users/aryan/Desktop/microservices learnings/microservices_implementation/auth-service/node_modules/router/index.js:291:5)\n    at Function.handle (/Users/aryan/Desktop/microservices learnings/microservices_implementation/auth-service/node_modules/router/index.js:186:3)\n    at router (/Users/aryan/Desktop/microservices learnings/microservices_implementation/auth-service/node_modules/router/index.js:60:12)\n    at Layer.handleRequest (/Users/aryan/Desktop/microservices learnings/microservices_implementation/auth-service/node_modules/router/lib/layer.js:152:17)","service":"auth-service","timestamp":"2026-07-30T10:39:34.142Z"}
+{"level":"info","message":"auth-service running on PORT:3001","service":"auth-service","timestamp":"2026-07-30T10:39:36.930Z"}
