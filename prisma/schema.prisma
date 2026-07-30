@@ -28,6 +28,8 @@ enum IdentityStatus {
 
 model Identity {
   id           String @id @default(uuid(7)) @db.Uuid
+  firstName    String @map("first_name")
+  lastName     String @map("last_name")
   username     String @unique @map("username")
   email        String @unique
   passwordHash String @map("password_hash")
@@ -41,7 +43,6 @@ model Identity {
 
   sessions Session[]
 
-  isActive            Boolean   @default(true) @map("is_active")
   isEmailVerified     Boolean   @default(false) @map("is_email_verified")
   isPhoneVerified     Boolean   @default(false) @map("is_phone_verified")
   failedLoginAttempts Int       @default(0) @map("failed_login_attempts")

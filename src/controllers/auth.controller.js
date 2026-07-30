@@ -21,103 +21,105 @@ import {
 import { appConfig, JWT_TOKEN } from "../configs/app.config.js";
 import { roleFilters } from "../middlewares/filters/roleFilters.js";
 
-// export const registerUser = asyncHandler(async (req, res) => {
-//   logger.info("Register user api hit.");
-//   try {
-//     const { username, email, password, role, phoneNumber, gender } = req.body;
+export const registerUser = asyncHandler(async (req, res) => {
+  logger.info("Register user api hit.");
+  try {
+    const { username, email, password, role, phoneNumber, gender } = req.data;
 
-//     if (!username || !email || !password || !role || !phoneNumber || !gender) {
-//       return res.status(400).json({
-//         message: "Details are missing.",
-//       });
-//     }
-//     //1. check user if already exists
-//     const isExists = await prisma.identity.findUnique({
-//       where: { OR: [{ email }, { username }] },
-//       select: {
-//         id: true,
-//       },
-//     });
-//     if (isExists) {
-//       if (isExists.email === email.toLowerCase()) {
-//         return res.status(409).json({
-//           message: "Email already exists.",
-//         });
-//       }
-//       if (isExists.identityname === username) {
-//         return res.status(409).json({
-//           message: "Username already exists.",
-//         });
-//       }
-//     }
-//     //2. hash the password before saving
-//     const hashedPassword = await argon2.hash(password, {
-//       type: argon2.argon2id,
-//     });
+    if (!username || !email || !password || !role || !phoneNumber || !gender) {
+      throw new BadRequestError(
+        "Details are missing.",
+        "details missing",
+        "DETAILS_MISSING",
+      );
+    }
+    //1. check user if already exists
+    const isExists = await prisma.identity.findUnique({
+      where: { OR: [{ email }, { username }] },
+      select: {
+        id: true,
+      },
+    });
+    if (isExists) {
+      if (isExists.email === email.toLowerCase()) {
+        return res.status(409).json({
+          message: "Email already exists.",
+        });
+      }
+      if (isExists.identityname === username) {
+        return res.status(409).json({
+          message: "Username already exists.",
+        });
+      }
+    }
+    //2. hash the password before saving
+    const hashedPassword = await argon2.hash(password, {
+      type: argon2.argon2id,
+    });
 
-//     // 3. Assign the hashed password and then save
-//     const created = await prisma.identity.create({
-//       data: {
-//         email,
-//         username,
-//         passwordHash: hashedPassword,
-//         role,
-//         phoneNumber,
-//         gender,
-//       },
-//     });
-//     //4. GENERATE TOKENS
-//     const accessToken = JWT.sign(
-//       { id: created.id, role: created.role },
-//       process.env.JWT_SECRET,
-//       {
-//         expiresIn: "2m",
-//       },
-//     );
-//     const refreshToken = crypto.randomBytes(64).toString("hex");
-//     const expDate = new Date();
-//     expDate.setDate(expDate.getDate() + 7);
-//     logger.info(`User saved: ${created.id}`);
-//     const createdSession = await prisma.session.create({
-//       data: {
-//         identityId: created.id,
-//         refreshTokenHash: await argon2.hash(refreshToken),
-//         deviceName: os.hostname(),
-//         platform: os.platform(),
-//         userAgent: req.get("User-Agent"),
-//         ipAddress: req.ip,
-//         expiresAt: expDate, // expires in 7 days
-//       },
-//     });
-//     if (!createdSession) {
-//       return res.status(400).json({
-//         message: "An unexpected error occcured.",
-//       });
-//     }
-//     logger.info(`Session saved: ${createdSession.id}`);
-//     res.cookie("access_token", accessToken, {
-//       httpOnly: true,
-//       secure: process.env.NODE_ENV === "production",
-//       maxAge: 1000 * 60 * 2, // 2 minutes expiry
-//       sameSite: "strict",
-//     });
-//     const formattedRefreshToken = `${createdSession.id}.${refreshToken}`;
-//     res.cookie("refresh_token", formattedRefreshToken, {
-//       httpOnly: true,
-//       secure: process.env.NODE_ENV === "production",
-//       maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days expiry
-//       sameSite: "strict",
-//     });
+    // 3. Assign the hashed password and then save
+    const created = await prisma.identity.create({
+      data: {
+        email,
+        username,
+        passwordHash: hashedPassword,
+        role,
+        phoneNumber,
+        gender,
+      },
+    });
+    //4. GENERATE TOKENS
+    const accessToken = JWT.sign(
+      { id: created.id, role: created.role },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "2m",
+      },
+    );
+    const refreshToken = crypto.randomBytes(64).toString("hex");
+    const expDate = new Date();
+    expDate.setDate(expDate.getDate() + 7);
+    logger.info(`User saved: ${created.id}`);
+    const createdSession = await prisma.session.create({
+      data: {
+        identityId: created.id,
+        refreshTokenHash: await argon2.hash(refreshToken),
+        deviceName: os.hostname(),
+        platform: os.platform(),
+        userAgent: req.get("User-Agent"),
+        ipAddress: req.ip,
+        expiresAt: expDate, // expires in 7 days
+      },
+    });
+    if (!createdSession) {
+      return res.status(400).json({
+        message: "An unexpected error occcured.",
+      });
+    }
+    logger.info(`Session saved: ${createdSession.id}`);
+    res.cookie("access_token", accessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 1000 * 60 * 2, // 2 minutes expiry
+      sameSite: "strict",
+    });
+    const formattedRefreshToken = `${createdSession.id}.${refreshToken}`;
+    res.cookie("refresh_token", formattedRefreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days expiry
+      sameSite: "strict",
+    });
 
-//     return res
-//       .status(201)
-//       .json({ message: "user registered successfully.", created });
-//   } catch (error) {
-//     return res.status(400).json({ message: error.stack });
-//     logger.error("register user api error", error);
-//     next(error);
-//   }
-// });
+    return res
+      .status(201)
+      .json({ message: "user registered successfully.", created });
+  } catch (error) {
+    return res.status(400).json({ message: error.stack });
+    logger.error("register user api error", error);
+    next(error);
+  }
+});
 
 export const loginUser = asyncHandler(async (req, res) => {
   const { email, password, username } = req.data;
@@ -226,8 +228,6 @@ export const loginUser = asyncHandler(async (req, res) => {
       "INVALID_CREDENTIALS",
     );
   }
-  // remove the password from user after match
-  // delete identity.passwordHash;
 
   const accessToken = generateAccessToken(identity);
 

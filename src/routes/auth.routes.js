@@ -29,26 +29,15 @@ const authRoutes = Router();
 
 authRoutes
   .post("/login", validate(loginValidation), loginUser)
-  .get("/refresh-session", refreshSession)
-  .get("/logout", logoutUser)
+  .post("/refresh-session", refreshSession)
+  .post("/logout", logoutUser)
   .post("/forgot-password", validate(forgotPasswordValidation), forgotPassword)
-  .post("/reset-password", validate(resetPasswordValidation), resetPassword);
-
-authRoutes.use(tokenVerification);
-authRoutes
+  .post("/reset-password", validate(resetPasswordValidation), resetPassword)
+  .use(tokenVerification)
   .get("/me", getMe)
-  .patch(
-    "/change-password",
-    validate(changePasswordValidation),
-    changePassword,
-  );
-
-// get all sessions
-// authRoutes.
-authRoutes
+  .patch("/change-password", validate(changePasswordValidation), changePassword)
   .get("/sessions", pagination, getIdentitySessions)
-  .delete("/sessions", revokeIdentitySessions);
+  .delete("/sessions", revokeIdentitySessions)
+  .get("/:id", getSingleUserById);
 
-//get single user by id.
-authRoutes.get("/:id", getSingleUserById);
 export default authRoutes;

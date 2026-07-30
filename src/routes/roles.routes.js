@@ -19,8 +19,9 @@ import pagination from "../middlewares/filters/common/pagination.js";
 import { roleFilters } from "../middlewares/filters/roleFilters.js";
 import tokenVerification from "../middlewares/tokenVerification.js";
 const roleRoutes = Router();
-roleRoutes.use(tokenVerification);
+
 roleRoutes
+  .use(tokenVerification)
   .post(
     "/",
     checkPermission("ROLE.CREATE"),

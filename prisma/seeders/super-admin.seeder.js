@@ -25,6 +25,14 @@ export async function seedSuperAdmin(prisma, { roles }) {
     "SUPER_ADMIN_USERNAME",
   ).toLowerCase();
 
+  const firstName = getRequiredEnvironmentVariable(
+    "SUPER_ADMIN_FIRSTNAME",
+  ).toLowerCase();
+
+  const lastName = getRequiredEnvironmentVariable(
+    "SUPER_ADMIN_LASTNAME",
+  ).toLowerCase();
+
   const email =
     getRequiredEnvironmentVariable("SUPER_ADMIN_EMAIL").toLowerCase();
 
@@ -83,6 +91,8 @@ export async function seedSuperAdmin(prisma, { roles }) {
 
   const superAdmin = await prisma.identity.create({
     data: {
+      firstName,
+      lastName,
       username,
       email,
       phoneNumber,
@@ -91,7 +101,6 @@ export async function seedSuperAdmin(prisma, { roles }) {
 
       roleId: superAdminRole.id,
 
-      isActive: true,
       isEmailVerified: true,
       isPhoneVerified: true,
     },

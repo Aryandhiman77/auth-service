@@ -83,7 +83,10 @@ const rolePermissionMappings = {
   ],
 };
 
-export async function seedRolePermissions(prisma, { roles, permissions }) {
+export async function seedRolePermissions(
+  prisma,
+  { roles, permissions, adminId },
+) {
   console.log("\n🔗 Seeding role-permission mappings...");
 
   const allPermissionCodes = [...permissions.keys()];
@@ -117,7 +120,7 @@ export async function seedRolePermissions(prisma, { roles, permissions }) {
     const data = permissionCodes.map((permissionCode) => ({
       roleId: role.id,
       permissionId: permissions.get(permissionCode).id,
-      assignedById: "019fa892-5dd4-7023-b819-7c0ef7933126",
+      assignedById: adminId,
     }));
 
     await prisma.rolePermission.createMany({
