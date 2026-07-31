@@ -38,13 +38,17 @@ model Identity {
 
   status IdentityStatus @default(PROVISIONING)
 
-  roleId String @map("role_id") @db.Uuid
-  role   Role   @relation(fields: [roleId], references: [id])
+  roleId            String    @map("role_id") @db.Uuid
+  role              Role      @relation(fields: [roleId], references: [id])
+  lastRoleChangedAt DateTime? @map("last_role_changed_at")
 
   sessions Session[]
 
-  isEmailVerified     Boolean   @default(false) @map("is_email_verified")
-  isPhoneVerified     Boolean   @default(false) @map("is_phone_verified")
+  isEmailVerified          Boolean   @default(false) @map("is_email_verified")
+  isPhoneVerified          Boolean   @default(false) @map("is_phone_verified")
+  lastEmailChangedAt       DateTime? @map("last_email_changed_at")
+  lastPhoneNumberChangedAt DateTime? @map("last_phone_number_changed_at")
+
   failedLoginAttempts Int       @default(0) @map("failed_login_attempts")
   lockedUntil         DateTime? @map("locked_until")
   lastLoginAt         DateTime? @map("last_login_at")

@@ -14,7 +14,7 @@ import {
   updateRole,
   updateRoleStatus,
   assignRolePermission,
-} from "../controllers/auth.controller.js";
+} from "../controllers/roles.controller.js";
 import pagination from "../middlewares/filters/common/pagination.js";
 import { roleFilters } from "../middlewares/filters/roleFilters.js";
 import tokenVerification from "../middlewares/tokenVerification.js";

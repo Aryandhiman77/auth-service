@@ -7,6 +7,29 @@ import {
   UnauthorizedError,
 } from "../helpers/apiError.js";
 import { prisma } from "../../lib/prisma.js";
+import { SYSTEM_ROLE_CODES } from "../configs/app.config.js";
+
+export const createPermission = asyncHandler(async (req, res) => {
+  if (req.identity.role.code !== SYSTEM_ROLE_CODES.SUPER_ADMIN) {
+    throw new BadRequestError("Only super admin can create permisison");
+  }
+  const permission = {
+    module: req.data.module,
+    action: req.data.action,
+    code: `${req.data.module}.${req.data.code}`,
+    name: req.data.name,
+    description: req.data.description,
+  };
+  const created = await prisma.permission.create(permission);
+  throw new BadRequestError(
+    "Failed to create permission",
+    "failed to create permission",
+    "FAILED_TO_CREATE_PERMISSION",
+  );
+  return res
+    .status(201)
+    .json(ApiResponse.created(`Permission created.`, created));
+});
 
 export const getPermissions = asyncHandler(async (req, res) => {
   const limit = req.pagination_query?.limit || 5;

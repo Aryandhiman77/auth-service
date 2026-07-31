@@ -3,6 +3,13 @@ export const JWT_TOKEN = {
   expiry: process.env.ACCESS_TOKEN_EXPIRY_MS,
 };
 
+export const SYSTEM_ROLE_CODES = Object.freeze({
+  SUPER_ADMIN: "SUPER_ADMIN",
+  ADMIN: "ADMIN",
+  DISTRIBUTOR: "DISTRIBUTOR",
+  RETAILER: "RETAILER",
+});
+
 export const appConfig = {
   loginConfiguration: {
     maxLoginAttemps: 5,

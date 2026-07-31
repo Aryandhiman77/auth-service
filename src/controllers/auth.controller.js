@@ -18,107 +18,152 @@ import {
   generateAccessToken,
   generateRefreshToken,
 } from "../utils/tokenGenerator.js";
-import { appConfig, JWT_TOKEN } from "../configs/app.config.js";
+import {
+  appConfig,
+  JWT_TOKEN,
+  SYSTEM_ROLE_CODES,
+} from "../configs/app.config.js";
 import { roleFilters } from "../middlewares/filters/roleFilters.js";
 
 export const registerUser = asyncHandler(async (req, res) => {
   logger.info("Register user api hit.");
-  try {
-    const { username, email, password, role, phoneNumber, gender } = req.data;
+  const {
+    firstName,
+    lastName,
+    username,
+    email,
+    password,
+    phoneNumber,
+    gender,
+    roleId,
+  } = req.data;
 
-    if (!username || !email || !password || !role || !phoneNumber || !gender) {
+  if (
+    !firstName ||
+    !lastName ||
+    !username ||
+    !email ||
+    !password ||
+    !phoneNumber ||
+    !gender ||
+    !roleId
+  ) {
+    throw new BadRequestError(
+      "Details are missing.",
+      "details missing",
+      "DETAILS_MISSING",
+    );
+  }
+
+  const isRoleExists = await prisma.role.findUnique({
+    where: { id: roleId },
+    select: {
+      id: true,
+      isActive: true,
+    },
+  });
+  if (!isRoleExists || !isRoleExists.isActive) {
+    throw new NotFoundError(
+      "Invalid role.",
+      "Role not found.",
+      "ROLE_NOT_FOUND",
+    );
+  }
+
+  //1. check user if already exists
+  const isExists = await prisma.identity.findUnique({
+    where: { OR: [{ email }, { username }, { phoneNumber }] },
+    select: {
+      id: true,
+    },
+  });
+  if (isExists) {
+    if (isExists.email === email.toLowerCase()) {
       throw new BadRequestError(
-        "Details are missing.",
-        "details missing",
-        "DETAILS_MISSING",
+        "Email already exists.",
+        "emails already exists",
+        "EMAIL_ALREADY_EXISTS",
       );
     }
-    //1. check user if already exists
-    const isExists = await prisma.identity.findUnique({
-      where: { OR: [{ email }, { username }] },
-      select: {
-        id: true,
-      },
-    });
-    if (isExists) {
-      if (isExists.email === email.toLowerCase()) {
-        return res.status(409).json({
-          message: "Email already exists.",
-        });
-      }
-      if (isExists.identityname === username) {
-        return res.status(409).json({
-          message: "Username already exists.",
-        });
-      }
+    if (isExists.identityname === username) {
+      throw new BadRequestError(
+        "Username already exists.",
+        "Username already exists",
+        "USERNAME_ALREADY_EXISTS",
+      );
     }
-    //2. hash the password before saving
-    const hashedPassword = await argon2.hash(password, {
-      type: argon2.argon2id,
-    });
-
-    // 3. Assign the hashed password and then save
-    const created = await prisma.identity.create({
-      data: {
-        email,
-        username,
-        passwordHash: hashedPassword,
-        role,
-        phoneNumber,
-        gender,
-      },
-    });
-    //4. GENERATE TOKENS
-    const accessToken = JWT.sign(
-      { id: created.id, role: created.role },
-      process.env.JWT_SECRET,
-      {
-        expiresIn: "2m",
-      },
-    );
-    const refreshToken = crypto.randomBytes(64).toString("hex");
-    const expDate = new Date();
-    expDate.setDate(expDate.getDate() + 7);
-    logger.info(`User saved: ${created.id}`);
-    const createdSession = await prisma.session.create({
-      data: {
-        identityId: created.id,
-        refreshTokenHash: await argon2.hash(refreshToken),
-        deviceName: os.hostname(),
-        platform: os.platform(),
-        userAgent: req.get("User-Agent"),
-        ipAddress: req.ip,
-        expiresAt: expDate, // expires in 7 days
-      },
-    });
-    if (!createdSession) {
-      return res.status(400).json({
-        message: "An unexpected error occcured.",
-      });
+    if (isExists.phoneNumber === phoneNumber) {
+      throw new BadRequestError(
+        "Phone Number already exists.",
+        "Phone Number already exists",
+        "PHONE_NUMBER_ALREADY_EXISTS",
+      );
     }
-    logger.info(`Session saved: ${createdSession.id}`);
-    res.cookie("access_token", accessToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      maxAge: 1000 * 60 * 2, // 2 minutes expiry
-      sameSite: "strict",
-    });
-    const formattedRefreshToken = `${createdSession.id}.${refreshToken}`;
-    res.cookie("refresh_token", formattedRefreshToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days expiry
-      sameSite: "strict",
-    });
-
-    return res
-      .status(201)
-      .json({ message: "user registered successfully.", created });
-  } catch (error) {
-    return res.status(400).json({ message: error.stack });
-    logger.error("register user api error", error);
-    next(error);
   }
+  const hashedPassword = await argon2.hash(password, {
+    type: argon2.argon2id,
+  });
+  const created = await prisma.identity.create({
+    data: {
+      firstName,
+      lastName,
+      username,
+      email,
+      passwordHash: hashedPassword,
+      phoneNumber,
+      gender,
+      roleId,
+    },
+  });
+
+  //4. GENERATE TOKENS
+  const accessToken = generateAccessToken(identity);
+  const { refreshToken, expiry } = generateRefreshToken();
+
+  logger.info(`User saved: ${created.id}`);
+  const createdSession = await prisma.session.create({
+    data: {
+      identityId: created.id,
+      refreshTokenHash: await argon2.hash(refreshToken),
+      deviceName: os.hostname(),
+      platform: os.platform(),
+      userAgent: req.get("User-Agent"),
+      ipAddress: req.ip,
+      expiresAt: expiry,
+    },
+  });
+  if (!createdSession) {
+    throw new BadRequestError(
+      "An unexpected error occcured.",
+      "unexpected error occured",
+      "UNEXPECTED_ERROR",
+    );
+  }
+  logger.info(`Session saved: ${createdSession.id}`);
+  res.cookie("access_token", accessToken, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    maxAge: 1000 * 60 * 2, // 2 minutes expiry
+    sameSite: "strict",
+  });
+  const formattedRefreshToken = `${createdSession.id}.${refreshToken}`;
+  res.cookie("access_token", accessToken, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    maxAge: JWT_TOKEN.expiry,
+    sameSite: "strict",
+  });
+
+  res.cookie("refresh_token", formattedRefreshToken, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    maxAge: appConfig.loginConfiguration.refreshTokenExpiryMs, // 7 days expirty
+    sameSite: "strict",
+  });
+
+  return res
+    .status(201)
+    .json({ message: "user registered successfully.", created });
 });
 
 export const loginUser = asyncHandler(async (req, res) => {
@@ -151,7 +196,10 @@ export const loginUser = asyncHandler(async (req, res) => {
     );
   }
   // if user is not super admin
-  if (identity.role.code !== "SUPER_ADMIN" && identity.role.code !== "ADMIN") {
+  if (
+    identity.role.code !== SYSTEM_ROLE_CODES.SUPER_ADMIN &&
+    identity.role.code !== SYSTEM_ROLE_CODES.ADMIN
+  ) {
     if (identity.status === "PROVISIONING") {
       throw new UnauthorizedError(
         "Your account setup is not complete.",
@@ -618,72 +666,6 @@ export const getMe = asyncHandler(async (req, res) => {
     .json(ApiResponse.success("Profile fetched successfully.", identityData));
 });
 
-export const getSingleUserById = asyncHandler(async (req, res) => {
-  if (!req.params.id) {
-    throw new NotFoundError(
-      "User not found.",
-      "user not found",
-      "USER_NOT_FOUND",
-    );
-  }
-  const identity = await prisma.identity.findUnique({
-    where: {
-      id: req.params.id,
-    },
-    include: {
-      role: {
-        select: {
-          code: true,
-          permissions: {
-            select: {
-              permission: {
-                select: {
-                  id: true,
-                  code: true,
-                  isActive: true,
-                  isSystem: true,
-                },
-              },
-            },
-          },
-        },
-      },
-    },
-  });
-  if (!identity) {
-    throw new NotFoundError(
-      "User not found.",
-      "Invalid credentials",
-      "USER_NOT_FOUND",
-    );
-  }
-  if (identity.deletedAt) {
-    throw new BadRequestError(
-      "User is deleted.",
-      "user is deleted",
-      "USER_DELETED",
-    );
-  }
-
-  const permissions =
-    identity.role.permissions.map((item) => ({
-      code: item.permission.code,
-      id: item.permission.id,
-      isActive: item.permission.isActive,
-      isSystem: item.permission.isSystem,
-    })) || [];
-
-  const mutatedIdentity = {
-    ...identity,
-    role: identity.role.code,
-    permissions,
-  };
-  delete mutatedIdentity.passwordHash;
-  return res
-    .status(200)
-    .json(ApiResponse.success(`User found.`, mutatedIdentity));
-});
-
 export const changePassword = asyncHandler(async (req, res) => {
   const { email, username, oldPassword, newPassword } = req.data;
 
@@ -770,202 +752,4 @@ export const revokeIdentitySessions = asyncHandler(async (req, res) => {
   return res
     .status(200)
     .json(ApiResponse.success(`All Sessions revoked.`, null));
-});
-
-export const createRole = asyncHandler(async (req, res) => {
-  const created = await prisma.role.create({
-    data: {
-      code: req.data.code,
-      name: req.data.name,
-      description: req.data.description,
-    },
-  });
-  if (!created) {
-    throw new BadRequestError(
-      "Failed to create role.",
-      "failed to create role.",
-      "FAILED_TO_CREATE_ROLE",
-    );
-  }
-  return res.status(201).json(ApiResponse.created(`Role created.`, created));
-});
-
-export const getRoles = asyncHandler(async (req, res) => {
-  const limit = req.pagination_query?.limit || 5;
-  const skip = req.pagination_query?.skip || 0;
-  const page = req.pagination_query?.page || 0;
-  const sorting = { createdAt: "desc" };
-
-  const [roles, count] = await Promise.all([
-    prisma.role.findMany({
-      where: {
-        ...req.role_filters,
-      },
-      take: limit,
-      skip,
-      orderBy: sorting,
-    }),
-    prisma.role.count({ where: { ...req.role_filters } }),
-  ]);
-  return res
-    .status(200)
-    .json(ApiResponse.paginated(roles, page + 1, limit, count));
-});
-
-export const getRoleById = asyncHandler(async (req, res) => {
-  if (!req.params?.id) {
-    throw new NotFoundError(
-      "Role not found.",
-      "role not found",
-      "ROLE_NOT_FOUND",
-    );
-  }
-  const role = await prisma.role.findUnique({
-    where: { id: req.params.id },
-  });
-  if (!role) {
-    throw new NotFoundError(
-      "Role not found.",
-      "role not found",
-      "ROLE_NOT_FOUND",
-    );
-  }
-  return res.status(200).json(ApiResponse.success(`Role found.`, role));
-});
-
-export const updateRole = asyncHandler(async (req, res) => {
-  console.log("role updating ¯pi is hig");
-  logger.info(`update role api is hit by ${req.identity.id}`);
-  if (!req.params.id) {
-    throw new NotFoundError(
-      "Role not found.",
-      "role not found",
-      "ROLE_NOT_FOUND",
-    );
-  }
-  const updated = await prisma.role.update({
-    where: { id: req.params.id },
-    data: {
-      name: req.data.name,
-      description: req.data.description,
-    },
-  });
-  return res.status(200).json(ApiResponse.success(`Role updated.`, updated));
-});
-
-export const updateRoleStatus = asyncHandler(async (req, res) => {
-  if (!req.params.id) {
-    throw new NotFoundError(
-      "Role not found.",
-      "role not found",
-      "ROLE_NOT_FOUND",
-    );
-  }
-  if (!["active", "inactive"].includes(req.body?.status)) {
-    throw new BadRequestError(
-      "status can be either active or inactive.",
-      "status can be either active/inactive",
-      "INVALID_STATUS_RECEIVED",
-    );
-  }
-  const updated = await prisma.role.update({
-    where: {
-      id: req.params.id,
-    },
-    data: {
-      isActive: req.body.status === "active",
-    },
-  });
-  return res
-    .status(200)
-    .json(
-      ApiResponse.success(
-        `Role status is ${req.body.status ? "active" : "inactive"} now.`,
-        updated,
-      ),
-    );
-});
-
-export const getRolePermissions = asyncHandler(async (req, res) => {
-  if (!req.params?.id) {
-    throw new NotFoundError(
-      "Role not found.",
-      "role not found",
-      "ROLE_NOT_FOUND",
-    );
-  }
-  const permissions = await prisma.rolePermission.findMany({
-    where: {
-      roleId: req.params.id,
-    },
-  });
-  return res
-    .status(200)
-    .json(ApiResponse.success("Permissions found.", permissions));
-});
-
-export const assignRolePermission = asyncHandler(async (req, res) => {
-  if (!req.params.id) {
-    throw new NotFoundError(
-      "Role not found.",
-      "role not found",
-      "ROLE_NOT_FOUND",
-    );
-  }
-  if (!req.data?.permissionIds?.length) {
-    throw new BadRequestError(
-      "select atleast one permission.",
-      "permissions missing",
-      "PERMISSIONS_MISSING",
-    );
-  }
-  const role = await prisma.role.findUnique({
-    where: { id: req.params.id },
-    select: {
-      id: true,
-      code: true,
-    },
-  });
-  if (!role) {
-    throw new NotFoundError(
-      "Role not found.",
-      "role not found",
-      "ROLE_NOT_FOUND",
-    );
-  }
-  if (role.code === "SUPER_ADMIN") {
-    throw new BadRequestError(
-      "Super Admin permissions cannot be modified.",
-      "Super Admin permissions cannot be modified.",
-      "FAILED_TO_UPDATE_SUPER_ADMIN_PERMISSION",
-    );
-  }
-
-  const updatedCount = await prisma.$transaction(async (tx) => {
-    await tx.rolePermission.deleteMany({
-      where: {
-        roleId: role.id,
-      },
-    });
-
-    await tx.rolePermission.createMany({
-      data: req.data.permissionIds.map((permissionId) => ({
-        roleId: role.id,
-        permissionId: permissionId,
-        assignedById: req.identity.id,
-      })),
-    });
-  });
-  if (!updatedCount) {
-    throw new BadRequestError(
-      "failed to update permissions.",
-      "failed to update permissions",
-      "FAILED_TO_UPDATE",
-    );
-  }
-  return res
-    .status(200)
-    .json(
-      ApiResponse.success(`${updatedCount} Permissions updated.`, permissions),
-    );
 });

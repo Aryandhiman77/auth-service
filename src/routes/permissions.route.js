@@ -1,5 +1,6 @@
 import { Router } from "express";
 import {
+  createPermission,
   getPermissions,
   getPermissionsByModulesGroup,
   getSinglePermissionById,
@@ -8,11 +9,14 @@ import { checkPermission } from "../middlewares/checkPermission.js";
 import pagination from "../middlewares/filters/common/pagination.js";
 import { permissionFilters } from "../middlewares/filters/permissionFilters.js";
 import tokenVerification from "../middlewares/tokenVerification.js";
+import { createPermissionValidation } from "../validations/permission.validation.js";
+import validate from "../helpers/validator.js";
 
 const permissionRoutes = Router();
 permissionRoutes.use(tokenVerification);
 
 permissionRoutes
+  .post("/", validate(createPermissionValidation), createPermission)
   .get(
     "/",
     checkPermission("PERMISSION.VIEW"),

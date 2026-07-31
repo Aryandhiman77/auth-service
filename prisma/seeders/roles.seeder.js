@@ -1,9 +1,4 @@
-export const SYSTEM_ROLE_CODES = Object.freeze({
-  SUPER_ADMIN: "SUPER_ADMIN",
-  ADMIN: "ADMIN",
-  DISTRIBUTOR: "DISTRIBUTOR",
-  RETAILER: "RETAILER",
-});
+import { SYSTEM_ROLE_CODES } from "../../src/configs/app.config";
 
 const systemRoles = [
   {

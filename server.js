@@ -14,6 +14,7 @@ import cookieParser from "cookie-parser";
 import errorHandler from "./src/middlewares/errorHandler.js";
 import roleRoutes from "./src/routes/roles.routes.js";
 import permissionRoutes from "./src/routes/permissions.route.js";
+import internalRoutes from "./src/routes/internal.routes.js";
 
 const app = express();
 
@@ -56,6 +57,7 @@ const sensitiveEndpointRateLimiter = rateLimit({
 app.use("/api/auth", sensitiveEndpointRateLimiter, authRoutes);
 app.use("/api/roles", roleRoutes);
 app.use("/api/permissions", permissionRoutes);
+app.use("/api/internal/v1", internalRoutes);
 app.use(errorHandler);
 app.listen(process.env.PORT, (error) => {
   if (error) {

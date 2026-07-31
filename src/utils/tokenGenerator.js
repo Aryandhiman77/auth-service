@@ -23,5 +23,6 @@ export const generateRefreshToken = () => {
   const expiry = new Date(
     Date.now() + appConfig.loginConfiguration.refreshTokenExpiryMs,
   );
+  
   return { refreshToken, expiry };
 };

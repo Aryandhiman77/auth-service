@@ -52,6 +52,34 @@ const phoneNumberValidation = Joi.string()
   });
 
 export const registerUserValidations = Joi.object({
+  firstName: Joi.string()
+    .lowercase()
+    .required()
+    .trim()
+    .min(2)
+    .max(100)
+    .label("name")
+    .messages({
+      "string.base": "identity name must be a string.",
+      "string.empty": "identity name is required.",
+      "any.required": "identity name is required.",
+      "string.min": "identity name must contain at least 2 characters.",
+      "string.max": "identity name must contain no more than 100 characters.",
+    }),
+  lastName: Joi.string()
+    .lowercase()
+    .required()
+    .trim()
+    .min(2)
+    .max(100)
+    .label("name")
+    .messages({
+      "string.base": "identity name must be a string.",
+      "string.empty": "identity name is required.",
+      "any.required": "identity name is required.",
+      "string.min": "identity name must contain at least 2 characters.",
+      "string.max": "identity name must contain no more than 100 characters.",
+    }),
   username: usernameValidation.required(),
   email: emailValidation.required(),
   password: Joi.string()
