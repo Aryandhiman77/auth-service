@@ -195,3 +195,20 @@ export const changePasswordValidation = Joi.object({
     "object.missing":
       "Either username or email is required to change your password.",
   });
+
+export const otpSchema = Joi.object({
+  otp: Joi.string()
+    .label("otp")
+    .length(6)
+    .pattern(/^[0-9]+$/)
+    .required()
+    .messages({
+      "string.length": "OTP must be exactly 6 digits.",
+      "string.pattern.base": "OTP must contain only numbers.",
+      "any.required": "OTP is required.",
+    }),
+})
+  .required()
+  .messages({
+    "any.required": "Otp is required.",
+  });

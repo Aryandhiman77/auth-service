@@ -32,7 +32,6 @@ export default async function mailSender({ to, subject, html }) {
       subject,
       html,
     });
-
     console.log(`Mail sent to ${to} with id: ${info.messageId}`);
     logger.info(`Mail sent to ${to} with id: ${info.messageId}`);
     return true;

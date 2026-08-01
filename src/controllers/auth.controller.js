@@ -24,6 +24,7 @@ import {
   SYSTEM_ROLE_CODES,
 } from "../configs/app.config.js";
 import { roleFilters } from "../middlewares/filters/roleFilters.js";
+import { verifyEmailService } from "../services/identity.services.js";
 
 export const registerUser = asyncHandler(async (req, res) => {
   logger.info("Register user api hit.");
@@ -193,6 +194,13 @@ export const loginUser = asyncHandler(async (req, res) => {
       "Identity not found.",
       "Identity not found.",
       "IDENTITY_NOT_FOUND",
+    );
+  }
+  if (identity.lockedUntil > new Date()) {
+    throw new BadRequestError(
+      `Identity is locked until ${identity.lockedUntil.toLocaleString(undefined, { hour12: true })}.`,
+      "identity locked.",
+      "IDENTITY_LOCKED",
     );
   }
   // if user is not super admin
@@ -541,6 +549,20 @@ export const forgotPassword = asyncHandler(async (req, res) => {
       "IDENTITY_NOT_FOUND",
     );
   }
+  if (identity.isEmailVerified) {
+    throw new BadRequestError(
+      "Verified email is required.",
+      "The identity does not have a verified email address.",
+      "EMAIL_NOT_VERIFIED",
+    );
+  }
+  if (identity.isPhoneVerified) {
+    throw new BadRequestError(
+      "Verified phone number is required.",
+      "The identity does not have a verified phone number.",
+      "PHONE_NOT_VERIFIED",
+    );
+  }
   const resetToken = crypto.randomBytes(32).toString("hex");
   const resetUrl = `${process.env.FRONTEND_URL}/reset-password?token=${encodeURIComponent(
     resetToken,
@@ -752,4 +774,20 @@ export const revokeIdentitySessions = asyncHandler(async (req, res) => {
   return res
     .status(200)
     .json(ApiResponse.success(`All Sessions revoked.`, null));
+});
+
+export const verifyEmail = asyncHandler(async (req, res) => {
+  const identity = await verifyEmailService(req.identity, req.data?.otp);
+  return res
+    .status(200)
+    .json(ApiResponse.success(`Email verification successful.`, identity));
+});
+
+export const verifyPhoneNumber = asyncHandler(async (req, res) => {
+  const identity = await verifyPhoneService(req.identity, req.data?.otp);
+  return res
+    .status(200)
+    .json(
+      ApiResponse.success(`Phone number verification successful.`, identity),
+    );
 });

@@ -19,4 +19,6 @@ export const appConfig = {
   forgotPasswordConfig: {
     resetLinkExpiryMinutes: 10,
   },
+  emailVerificationOtpExpiryMinutes: 10,
+  phoneNumberVerificationOtpExpiryMinutes: 10,
 };

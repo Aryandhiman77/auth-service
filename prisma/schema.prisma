@@ -58,8 +58,9 @@ model Identity {
   deletedAt           DateTime?            @map("deleted_at")
   passwordResetTokens PasswordResetToken[]
 
-  assignedBy RolePermission[] @relation("assignedBy")
-  updatedBy  RolePermission[] @relation("updatedBy")
+  assignedBy              RolePermission[]         @relation("assignedBy")
+  updatedBy               RolePermission[]         @relation("updatedBy")
+  identifierVerifications IdentifierVerification[]
 
   @@index([roleId])
   @@index([status])
@@ -190,4 +191,43 @@ model PasswordResetToken {
 
   @@index([identityId])
   @@index([expiresAt])
+}
+
+enum VerificationType {
+  EMAIL_REGISTRATION
+  PHONE_REGISTRATION
+  EMAIL_CHANGE
+  PHONE_CHANGE
+}
+
+enum VerificationStatus {
+  PENDING
+  VERIFIED
+  EXPIRED
+  REVOKED
+}
+
+model IdentifierVerification {
+  id String @id @default(uuid(7)) @db.Uuid
+
+  identityId String   @db.Uuid
+  identity   Identity @relation(fields: [identityId], references: [id], onDelete: Cascade)
+
+  type VerificationType
+
+  targetValue String @map("target_value") @db.VarChar(254) // email || mobile
+  tokenHash   String @map("token_hash") @db.VarChar(255)
+
+  attempts    Int @default(0)
+  maxAttempts Int @default(5) @map("max_attempts")
+
+  expiresAt  DateTime  @map("expires_at")
+  verifiedAt DateTime? @map("verified_at")
+  revokedAt  DateTime? @map("revoked_at")
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([identityId])
+  @@index([expiresAt])
+  @@map("identifier_verifications")
 }

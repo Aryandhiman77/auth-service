@@ -4,8 +4,7 @@ import { NotFoundError, UnauthorizedError } from "../helpers/apiError.js";
 import { JWT_TOKEN } from "../configs/app.config.js";
 import { prisma } from "../../lib/prisma.js";
 const tokenVerification = asyncHandler(async (req, res, next) => {
-  const token =
-    req.cookies?.access_token || req.headers.authorization?.split(" ")[1];
+  const token = req.cookies?.access_token;
   if (!token) {
     throw new UnauthorizedError("No authorization token provided.");
   }
@@ -44,12 +43,18 @@ const tokenVerification = asyncHandler(async (req, res, next) => {
       },
     },
   });
-
   if (!identity || identity.deletedAt) {
     throw new NotFoundError(
-      "User not found.",
-      "Invalid credentials",
-      "USER_NOT_FOUND",
+      "Identity not found.",
+      "Identity not found.",
+      "IDENTITY_NOT_FOUND",
+    );
+  }
+  if (identity.lockedUntil > new Date()) {
+    throw new BadRequestError(
+      `Identity is locked until ${identity.lockedUntil.toLocaleString(undefined, { hour12: true })}.`,
+      "identity locked.",
+      "IDENTITY_LOCKED",
     );
   }
   const permissions =

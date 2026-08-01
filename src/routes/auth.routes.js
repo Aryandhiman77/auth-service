@@ -10,6 +10,8 @@ import {
   resetPassword,
   revokeIdentitySessions,
   registerUser,
+  verifyEmail,
+  verifyPhoneNumber,
 } from "../controllers/auth.controller.js";
 import {
   loginValidation,
@@ -17,6 +19,7 @@ import {
   resetPasswordValidation,
   changePasswordValidation,
   registerUserValidations,
+  otpSchema,
 } from "../validations/auth.validations.js";
 import validate from "../helpers/validator.js";
 import tokenVerification from "../middlewares/tokenVerification.js";
@@ -36,6 +39,8 @@ authRoutes
   .get("/me", getMe)
   .patch("/change-password", validate(changePasswordValidation), changePassword)
   .get("/sessions", pagination, getIdentitySessions)
-  .delete("/sessions", revokeIdentitySessions);
+  .delete("/sessions", revokeIdentitySessions)
+  .post("/verify-email", validate(otpSchema), verifyEmail)
+  .post("/verify-phone", validate(otpSchema), verifyPhoneNumber);
 
 export default authRoutes;
