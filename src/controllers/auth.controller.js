@@ -24,7 +24,10 @@ import {
   SYSTEM_ROLE_CODES,
 } from "../configs/app.config.js";
 import { roleFilters } from "../middlewares/filters/roleFilters.js";
-import { verifyEmailService } from "../services/identity.services.js";
+import {
+  verifyEmailService,
+  verifyPhoneNumberService,
+} from "../services/identity.services.js";
 
 export const registerUser = asyncHandler(async (req, res) => {
   logger.info("Register user api hit.");
@@ -208,14 +211,6 @@ export const loginUser = asyncHandler(async (req, res) => {
     identity.role.code !== SYSTEM_ROLE_CODES.SUPER_ADMIN &&
     identity.role.code !== SYSTEM_ROLE_CODES.ADMIN
   ) {
-    if (identity.status === "PROVISIONING") {
-      throw new UnauthorizedError(
-        "Your account setup is not complete.",
-        "account setup incomplete",
-        "ACCOUNT_SETUP_INCOMPLETE",
-      );
-    }
-
     if (identity.status === "INACTIVE") {
       throw new UnauthorizedError(
         "Your account is inactive.",
@@ -237,14 +232,6 @@ export const loginUser = asyncHandler(async (req, res) => {
         "Your account is no longer available.",
         "account is no longer avaiable",
         "ACCOUNT_ARCHIVED",
-      );
-    }
-
-    if (identity.status !== "ACTIVE") {
-      throw new UnauthorizedError(
-        "Login is not allowed for this account.",
-        "Login is not allowed",
-        "LOGIN_NOT_ALLOWED",
       );
     }
   }
@@ -784,7 +771,7 @@ export const verifyEmail = asyncHandler(async (req, res) => {
 });
 
 export const verifyPhoneNumber = asyncHandler(async (req, res) => {
-  const identity = await verifyPhoneService(req.identity, req.data?.otp);
+  const identity = await verifyPhoneNumberService(req.identity, req.data?.otp);
   return res
     .status(200)
     .json(

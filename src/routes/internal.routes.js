@@ -16,9 +16,8 @@ import { verifyServiceKey } from "../middlewares/verifyServiceKey.js";
 
 const internalRoutes = Router();
 
-internalRoutes.get("/oauth/token", getServiceToken);
-
 internalRoutes
+  .get("/oauth/token", getServiceToken)
   .use(verifyServiceKey)
   .post("/identities", createIdentityByRole)
   .get("/identities/:id", getSingleUserById)

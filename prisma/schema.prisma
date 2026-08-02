@@ -200,13 +200,6 @@ enum VerificationType {
   PHONE_CHANGE
 }
 
-enum VerificationStatus {
-  PENDING
-  VERIFIED
-  EXPIRED
-  REVOKED
-}
-
 model IdentifierVerification {
   id String @id @default(uuid(7)) @db.Uuid
 
@@ -227,6 +220,7 @@ model IdentifierVerification {
 
   createdAt DateTime @default(now()) @map("created_at")
 
+  @@unique([identityId, targetValue, tokenHash])
   @@index([identityId])
   @@index([expiresAt])
   @@map("identifier_verifications")

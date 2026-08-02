@@ -4,21 +4,15 @@ import crypto from "crypto";
 
 export const verifyEmailService = async (identity, otp) => {
   const recordHash = crypto.createHash("sha256").update(otp).digest("hex");
-  const record = await prisma.identifierVerification.findFirst({
+  const record = await prisma.identifierVerification.findUnique({
     where: {
-      identityId: identity.id,
-      tokenHash: recordHash,
-    },
-    select: {
-      id: true,
-      type: true,
-      expiresAt: true,
-      revokedAt: true,
-      attempts: true,
-      maxAttempts: true,
+      identityId_targetValue_tokenHash: {
+        identityId: identity.id,
+        targetValue: identity.email,
+        tokenHash: recordHash,
+      },
     },
   });
-  return record;
   if (
     !record ||
     record.type === "PHONE_CHANGE" ||
@@ -57,7 +51,11 @@ export const verifyEmailService = async (identity, otp) => {
     });
     await tx.identifierVerification.update({
       where: {
-        AND: [{ identityId: identity.id }, { tokenHash: recordHash }],
+        identityId_targetValue_tokenHash: {
+          identityId: identity.id,
+          targetValue: identity.email,
+          tokenHash: recordHash,
+        },
       },
       data: {
         revokedAt: now,
@@ -71,13 +69,13 @@ export const verifyEmailService = async (identity, otp) => {
 
 export const verifyPhoneNumberService = async (identity, otp) => {
   const recordHash = crypto.createHash("sha256").update(otp).digest("hex");
-  const record = await prisma.identifierVerification.findFirst({
+  const record = await prisma.identifierVerification.findUnique({
     where: {
-      identityId: identity.id,
-      tokenHash: recordHash,
-    },
-    select: {
-      tokenHash: true,
+      identityId_targetValue_tokenHash: {
+        identityId: identity.id,
+        targetValue: identity.phoneNumber,
+        tokenHash: recordHash,
+      },
     },
   });
   if (
@@ -92,8 +90,16 @@ export const verifyPhoneNumberService = async (identity, otp) => {
     );
   }
   const now = new Date();
-  if (record.revokedAt < now || record.expiresAt < now) {
-    throw new BadRequestError("OTP is expired", "otp expired", "OTP_EXPIRED");
+  if (record.revokedAt) {
+    throw new BadRequestError(
+      "OTP already used.",
+      "otp already used",
+      "OTP_ALREADY_USED",
+    );
+  }
+
+  if (record.expiresAt < now) {
+    throw new BadRequestError("OTP expired.", "otp expired", "OTP_EXPIRED");
   }
   // token is not expired and valid then mark phoneNumber as verified and revoke the token
   const result = await prisma.$transaction(async (tx) => {
@@ -109,7 +115,13 @@ export const verifyPhoneNumberService = async (identity, otp) => {
       },
     });
     await tx.identifierVerification.update({
-      where: { identityId: identity.id, tokenHash: recordHash },
+      where: {
+        identityId_targetValue_tokenHash: {
+          identityId: identity.id,
+          targetValue: identity.phoneNumber,
+          tokenHash: recordHash,
+        },
+      },
       data: {
         revokedAt: now,
         verifiedAt: now,
