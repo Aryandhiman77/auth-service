@@ -42,5 +42,6 @@ authRoutes
   .delete("/sessions", revokeIdentitySessions)
   .post("/verify-email", validate(otpSchema), verifyEmail)
   .post("/verify-phone", validate(otpSchema), verifyPhoneNumber);
+// .post("/resend-email", resendOtpVerificationEmail);
 
 export default authRoutes;
