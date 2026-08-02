@@ -1,15 +1,21 @@
 import { prisma } from "../../lib/prisma.js";
 import { BadRequestError, NotFoundError } from "../helpers/apiError.js";
 import crypto from "crypto";
+import { generateOtpWithResetHash } from "../utils/tokenGenerator.js";
+import { IdentityStatus } from "../../generated/prisma/index.js";
+import mailSender from "../helpers/nodeMailer.js";
+import { appConfig } from "../configs/app.config.js";
+import { emailVerificationOtpTemplate } from "../html/emailVerificationOtpTemplate.js";
 
 export const verifyEmailService = async (identity, otp) => {
   const recordHash = crypto.createHash("sha256").update(otp).digest("hex");
-  const record = await prisma.identifierVerification.findUnique({
+  const record = await prisma.identifierVerification.findFirst({
     where: {
-      identityId_targetValue: {
-        identityId: identity.id,
-        targetValue: identity.email,
-      },
+      identityId: identity.id,
+      targetValue: identity.email,
+    },
+    orderBy: {
+      createdAt: "desc",
     },
     include: {
       identity: {
@@ -65,10 +71,7 @@ export const verifyEmailService = async (identity, otp) => {
     }
     await prisma.identifierVerification.update({
       where: {
-        identityId_targetValue: {
-          identityId: identity.id,
-          targetValue: identity.email,
-        },
+        id: record.id,
       },
       data: updatedData,
     });
@@ -96,10 +99,7 @@ export const verifyEmailService = async (identity, otp) => {
     });
     await tx.identifierVerification.update({
       where: {
-        identityId_targetValue: {
-          identityId: identity.id,
-          targetValue: identity.email,
-        },
+        id: record.id,
       },
       data: {
         revokedAt: now,
@@ -113,12 +113,13 @@ export const verifyEmailService = async (identity, otp) => {
 
 export const verifyPhoneNumberService = async (identity, otp) => {
   const recordHash = crypto.createHash("sha256").update(otp).digest("hex");
-  const record = await prisma.identifierVerification.findUnique({
+  const record = await prisma.identifierVerification.findFirst({
     where: {
-      identityId_targetValue: {
-        identityId: identity.id,
-        targetValue: identity.phoneNumber,
-      },
+      identityId: identity.id,
+      targetValue: identity.phoneNumber,
+    },
+    orderBy: {
+      createdAt: "desc",
     },
     include: {
       identity: {
@@ -173,10 +174,7 @@ export const verifyPhoneNumberService = async (identity, otp) => {
     }
     await prisma.identifierVerification.update({
       where: {
-        identityId_targetValue: {
-          identityId: identity.id,
-          targetValue: identity.phoneNumber,
-        },
+        id: record.id,
       },
       data: updatedData,
     });
@@ -204,10 +202,7 @@ export const verifyPhoneNumberService = async (identity, otp) => {
     });
     await tx.identifierVerification.update({
       where: {
-        identityId_targetValue: {
-          identityId: identity.id,
-          targetValue: identity.phoneNumber,
-        },
+        id: record.id,
       },
       data: {
         revokedAt: now,
@@ -218,4 +213,110 @@ export const verifyPhoneNumberService = async (identity, otp) => {
     return updatedIdentity;
   });
   return result;
+};
+
+export const resendVerificationOtpOnEmail = async (identity) => {
+  if (identity.isEmailVerified) {
+    throw new BadRequestError(
+      "Email is already verified.",
+      "Email already verified",
+      "Email already verified",
+    );
+  }
+  const now = new Date();
+  const { otp, resetOtpHash, expiryAt } = generateOtpWithResetHash();
+  await prisma.$transaction(async (tx) => {
+    await tx.identifierVerification.updateMany({
+      where: {
+        identityId: identity.id,
+        targetValue: identity.email,
+        type:
+          identity.status === IdentityStatus.PROVISIONING
+            ? "EMAIL_REGISTRATION"
+            : "EMAIL_CHANGE",
+      },
+      data: {
+        revokedAt: now,
+      },
+    });
+    await tx.identifierVerification.create({
+      data: {
+        identityId: identity.id,
+        type:
+          identity.status === IdentityStatus.PROVISIONING
+            ? "EMAIL_REGISTRATION"
+            : "EMAIL_CHANGE",
+        targetValue: identity.email,
+        tokenHash: resetOtpHash,
+        expiresAt: expiryAt,
+      },
+    });
+  });
+  const isOtpSentToEmail = await mailSender({
+    to: identity.email,
+    subject: "Email verification",
+    html: emailVerificationOtpTemplate({
+      firstName: identity.firstName,
+      otp: otp,
+      expiryMinutes: appConfig.emailVerificationOtpExpiryMinutes,
+    }),
+  });
+  return {
+    identityId: identity.id,
+    isOtpSentToEmail,
+    isEmailVerified: identity.isEmailVerified,
+  };
+};
+
+export const resendVerficationCodeOnPhone = async (identity) => {
+  if (identity.isPhoneVerified) {
+    throw new BadRequestError(
+      "Phone number is already verified.",
+      "Phone number already verified",
+      "Phone number already verified",
+    );
+  }
+  const now = new Date();
+  const { otp, resetOtpHash, expiryAt } = generateOtpWithResetHash();
+  await prisma.$transaction(async (tx) => {
+    await tx.identifierVerification.updateMany({
+      where: {
+        identityId: identity.id,
+        targetValue: identity.phoneNumber,
+        type:
+          identity.status === IdentityStatus.PROVISIONING
+            ? "PHONE_REGISTRATION"
+            : "PHONE_CHANGE",
+      },
+      data: {
+        revokedAt: now,
+      },
+    });
+    await tx.identifierVerification.create({
+      data: {
+        identityId: identity.id,
+        type:
+          identity.status === IdentityStatus.PROVISIONING
+            ? "PHONE_REGISTRATION"
+            : "PHONE_CHANGE",
+        targetValue: identity.phoneNumber,
+        tokenHash: resetOtpHash,
+        expiresAt: expiryAt,
+      },
+    });
+  });
+  const isOtpSentToPhoneNumber = await mailSender({
+    to: identity.email,
+    subject: "Phone number verification",
+    html: emailVerificationOtpTemplate({
+      firstName: identity.firstName,
+      otp: otp,
+      expiryMinutes: appConfig.emailVerificationOtpExpiryMinutes,
+    }),
+  });
+  return {
+    identityId: identity.id,
+    isOtpSentToPhoneNumber,
+    isPhoneVerified: identity.isPhoneVerified,
+  };
 };

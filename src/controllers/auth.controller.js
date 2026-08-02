@@ -25,6 +25,8 @@ import {
 } from "../configs/app.config.js";
 import { roleFilters } from "../middlewares/filters/roleFilters.js";
 import {
+  resendVerficationCodeOnPhone,
+  resendVerificationOtpOnEmail,
   verifyEmailService,
   verifyPhoneNumberService,
 } from "../services/identity.services.js";
@@ -776,5 +778,28 @@ export const verifyPhoneNumber = asyncHandler(async (req, res) => {
     .status(200)
     .json(
       ApiResponse.success(`Phone number verification successful.`, identity),
+    );
+});
+
+export const resendOtpVerificationEmail = asyncHandler(async (req, res) => {
+  const identity = await resendVerificationOtpOnEmail(req.identity);
+  return res
+    .status(200)
+    .json(
+      ApiResponse.success(
+        `Email verification otp sent to ${req.identity.email}.`,
+        identity,
+      ),
+    );
+});
+export const resendPhoneOtpVerificationCode = asyncHandler(async (req, res) => {
+  const identity = await resendVerficationCodeOnPhone(req.identity);
+  return res
+    .status(200)
+    .json(
+      ApiResponse.success(
+        `Phone number verification otp sent to ${req.identity.phoneNumber}.`,
+        identity,
+      ),
     );
 });

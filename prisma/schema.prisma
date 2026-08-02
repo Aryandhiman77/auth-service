@@ -220,8 +220,8 @@ model IdentifierVerification {
 
   createdAt DateTime @default(now()) @map("created_at")
 
-  @@unique([identityId, targetValue])
   @@index([identityId])
   @@index([expiresAt])
+  @@index([identityId, targetValue])
   @@map("identifier_verifications")
 }

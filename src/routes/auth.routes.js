@@ -12,6 +12,8 @@ import {
   registerUser,
   verifyEmail,
   verifyPhoneNumber,
+  resendOtpVerificationEmail,
+  resendPhoneOtpVerificationCode,
 } from "../controllers/auth.controller.js";
 import {
   loginValidation,
@@ -41,7 +43,8 @@ authRoutes
   .get("/sessions", pagination, getIdentitySessions)
   .delete("/sessions", revokeIdentitySessions)
   .post("/verify-email", validate(otpSchema), verifyEmail)
-  .post("/verify-phone", validate(otpSchema), verifyPhoneNumber);
-// .post("/resend-email", resendOtpVerificationEmail);
+  .post("/verify-phone", validate(otpSchema), verifyPhoneNumber)
+  .post("/resend-email", resendOtpVerificationEmail)
+  .post("/resend-phone", resendPhoneOtpVerificationCode);
 
 export default authRoutes;
