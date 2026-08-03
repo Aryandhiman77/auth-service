@@ -44,6 +44,9 @@ model Identity {
 
   sessions Session[]
 
+  pendingEmail String? @unique @map("pending_email") @db.VarChar(254)
+  pendingPhone String? @unique @map("pending_phone") @db.VarChar(15)
+
   isEmailVerified          Boolean   @default(false) @map("is_email_verified")
   isPhoneVerified          Boolean   @default(false) @map("is_phone_verified")
   lastEmailChangedAt       DateTime? @map("last_email_changed_at")
@@ -208,8 +211,9 @@ model IdentifierVerification {
 
   type VerificationType
 
-  targetValue String @map("target_value") @db.VarChar(254) // email || mobile
-  tokenHash   String @map("token_hash") @db.VarChar(255)
+  oldTargetValue String? @map("old_target_value") @db.VarChar(254) //old email || old Phone number
+  targetValue    String  @map("target_value") @db.VarChar(254) // email || mobile
+  tokenHash      String  @map("token_hash") @db.VarChar(255)
 
   attempts    Int @default(0)
   maxAttempts Int @default(5) @map("max_attempts")

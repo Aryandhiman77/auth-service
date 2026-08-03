@@ -206,10 +206,14 @@ export const createIdentityByRole = asyncHandler(async (req, res) => {
         lastName,
         username,
         email,
+        pendingEmail: null,
+        pendingPhone: null,
         passwordHash: hashedPassword,
         phoneNumber,
         gender,
         roleId,
+        isEmailVerified: false,
+        isPhoneVerified: false,
       },
     });
     const createEmailVerificationRecord =
@@ -295,9 +299,6 @@ export const updateIdentity = asyncHandler(async (req, res) => {
   let isOtpSentToEmail = false;
   let isOtpSentToPhoneNumber = false;
   if (email && isIdentityExists.email !== email) {
-    identityUpdationObj.email = email;
-    identityUpdationObj.isEmailVerified = false;
-    identityUpdationObj.lastEmailChangedAt = now;
     // expire the previous otps from db and create new otp
     const {
       otp: emailVerificationOtp,
@@ -314,6 +315,14 @@ export const updateIdentity = asyncHandler(async (req, res) => {
         },
         data: {
           revokedAt: now,
+        },
+      });
+      await tx.identity.update({
+        where: {
+          id: isIdentityExists.id,
+        },
+        data: {
+          pendingEmail: email,
         },
       });
       await tx.identifierVerification.create({
@@ -337,9 +346,6 @@ export const updateIdentity = asyncHandler(async (req, res) => {
     });
   }
   if (phoneNumber && isIdentityExists.phoneNumber !== phoneNumber) {
-    identityUpdationObj.phoneNumber = phoneNumber;
-    identityUpdationObj.isPhoneVerified = false;
-    identityUpdationObj.lastPhoneNumberChangedAt = now;
     const {
       otp: phoneVerificationOtp,
       resetOtpHash: phoneResetHash,
@@ -355,6 +361,14 @@ export const updateIdentity = asyncHandler(async (req, res) => {
         },
         data: {
           revokedAt: now,
+        },
+      });
+      await tx.identity.update({
+        where: {
+          id: isIdentityExists.id,
+        },
+        data: {
+          pendingPhone: phoneNumber,
         },
       });
       await tx.identifierVerification.create({
