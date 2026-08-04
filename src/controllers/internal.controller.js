@@ -3,6 +3,7 @@ import ApiResponse from "../helpers/apiResponse.js";
 import {
   ApiError,
   BadRequestError,
+  ConflictError,
   NotFoundError,
   UnauthorizedError,
 } from "../helpers/apiError.js";
@@ -285,137 +286,202 @@ export const updateIdentity = asyncHandler(async (req, res) => {
   const { firstName, lastName, username, email, phoneNumber, gender } =
     req.body;
 
-  const identityUpdationObj = {};
   const isIdentityExists = await prisma.identity.findUnique({
     where: { id: req.params.id },
     select: {
       id: true,
-      email,
-      phoneNumber,
-      firstName,
+      email: true,
+      phoneNumber: true,
+      firstName: true,
+      lastName: true,
+      username: true,
+      gender: true,
     },
   });
-  const now = new Date();
-  let isOtpSentToEmail = false;
-  let isOtpSentToPhoneNumber = false;
-  if (email && isIdentityExists.email !== email) {
-    // expire the previous otps from db and create new otp
-    const {
-      otp: emailVerificationOtp,
-      resetOtpHash: emailResetHash,
-      expiryAt: emailOtpExpiry,
-    } = generateOtpWithResetHash();
 
-    await prisma.$transaction(async (tx) => {
-      await prisma.identifierVerification.updateMany({
+  if (!isIdentityExists) {
+    throw new NotFoundError(
+      "identity not found.",
+      "identity not found",
+      "IDENTITY_NOT_FOUND",
+    );
+  }
+
+  const isEmailChanged =
+    email !== undefined && email !== isIdentityExists.email;
+
+  const isPhoneChanged =
+    phoneNumber !== undefined && phoneNumber !== isIdentityExists.phoneNumber;
+
+  const isUsernameChanged =
+    username !== undefined && username !== isIdentityExists.username;
+
+  if (isEmailChanged) {
+    const existingEmail = await prisma.identity.findUnique({
+      where: { email },
+      select: { id: true },
+    });
+
+    if (existingEmail) {
+      throw new ConflictError(
+        "This email is already taken.",
+        "identity exists with this email",
+        "IDENTITY_EMAIL_ALREADY_EXISTS",
+      );
+    }
+  }
+
+  if (isPhoneChanged) {
+    const existingPhone = await prisma.identity.findUnique({
+      where: { phoneNumber },
+      select: { id: true },
+    });
+
+    if (existingPhone) {
+      throw new ConflictError(
+        "This phone number is already taken.",
+        "identity exists with this phone",
+        "IDENTITY_PHONE_ALREADY_EXISTS",
+      );
+    }
+  }
+
+  if (isUsernameChanged) {
+    const existingUsername = await prisma.identity.findUnique({
+      where: { username },
+      select: { id: true },
+    });
+
+    if (existingUsername) {
+      throw new ConflictError(
+        "This username is already taken.",
+        "identity exists with this username",
+        "IDENTITY_USERNAME_ALREADY_EXISTS",
+      );
+    }
+  }
+  const now = new Date();
+  const emailOtpData = isEmailChanged ? generateOtpWithResetHash() : null;
+  const phoneOtpData = isPhoneChanged ? generateOtpWithResetHash() : null;
+
+  const updated = await prisma.$transaction(async (tx) => {
+    const identityData = {};
+
+    if (firstName !== undefined) {
+      identityData.firstName = firstName;
+    }
+
+    if (lastName !== undefined) {
+      identityData.lastName = lastName;
+    }
+
+    if (gender !== undefined) {
+      identityData.gender = gender;
+    }
+
+    if (isUsernameChanged) {
+      identityData.username = username;
+    }
+
+    if (isEmailChanged) {
+      identityData.pendingEmail = email;
+    }
+
+    if (isPhoneChanged) {
+      identityData.pendingPhone = phoneNumber;
+    }
+
+    const updatedIdentity = await tx.identity.update({
+      where: {
+        id: isIdentityExists.id,
+      },
+      data: identityData,
+    });
+
+    // EMAIL CHANGE
+    if (emailOtpData) {
+      await tx.identifierVerification.updateMany({
         where: {
           identityId: isIdentityExists.id,
           type: "EMAIL_CHANGE",
-          expiresAt: { gt: now },
+          revokedAt: null,
+          verifiedAt: null,
+          expiresAt: {
+            gt: now,
+          },
         },
         data: {
           revokedAt: now,
         },
       });
-      await tx.identity.update({
-        where: {
-          id: isIdentityExists.id,
-        },
-        data: {
-          pendingEmail: email,
-        },
-      });
+
       await tx.identifierVerification.create({
         data: {
           identityId: isIdentityExists.id,
           type: "EMAIL_CHANGE",
           targetValue: email,
-          tokenHash: emailResetHash,
-          expiresAt: emailOtpExpiry,
+          tokenHash: emailOtpData.resetOtpHash,
+          expiresAt: emailOtpData.expiryAt,
         },
       });
-    });
-    isOtpSentToEmail = await mailSender({
-      to: isIdentityExists.email,
-      subject: "Email verification",
-      html: emailVerificationOtpTemplate({
-        firstName: isIdentityExists.firstName,
-        otp: emailVerificationOtp,
-        expiryMinutes: appConfig.emailVerificationOtpExpiryMinutes,
-      }),
-    });
-  }
-  if (phoneNumber && isIdentityExists.phoneNumber !== phoneNumber) {
-    const {
-      otp: phoneVerificationOtp,
-      resetOtpHash: phoneResetHash,
-      expiryAt: phoneOtpExpiry,
-    } = generateOtpWithResetHash();
+    }
 
-    await prisma.$transaction(async (tx) => {
-      await prisma.identifierVerification.updateMany({
+    // PHONE CHANGE
+    if (phoneOtpData) {
+      await tx.identifierVerification.updateMany({
         where: {
           identityId: isIdentityExists.id,
           type: "PHONE_CHANGE",
-          expiresAt: { gt: now },
+          revokedAt: null,
+          verifiedAt: null,
+          expiresAt: {
+            gt: now,
+          },
         },
         data: {
           revokedAt: now,
         },
       });
-      await tx.identity.update({
-        where: {
-          id: isIdentityExists.id,
-        },
-        data: {
-          pendingPhone: phoneNumber,
-        },
-      });
+
       await tx.identifierVerification.create({
         data: {
           identityId: isIdentityExists.id,
           type: "PHONE_CHANGE",
           targetValue: phoneNumber,
-          tokenHash: phoneResetHash,
-          expiresAt: phoneOtpExpiry,
+          tokenHash: phoneOtpData.resetOtpHash,
+          expiresAt: phoneOtpData.expiryAt,
         },
       });
+    }
+    return updatedIdentity;
+  });
+  const { passwordHash, otherDetails } = updated;
+  const responseObject = { ...otherDetails };
+  if (emailOtpData) {
+    responseObject.isEmailOtpSent = await mailSender({
+      to: email,
+      subject: "Email verification",
+      html: emailVerificationOtpTemplate({
+        firstName: isIdentityExists.firstName,
+        otp: emailOtpData.otp,
+        expiryMinutes: appConfig.emailVerificationOtpExpiryMinutes,
+      }),
     });
-    // ❌ -> phone number verification api
-    isOtpSentToPhoneNumber = await mailSender({
+  }
+  if (phoneOtpData) {
+    responseObject.isPhoneOtpSent = await mailSender({
       to: isIdentityExists.email,
       subject: "Phone number verification",
       html: emailVerificationOtpTemplate({
         firstName: isIdentityExists.firstName,
-        otp: phoneVerificationOtp,
+        otp: phoneOtpData.otp,
         expiryMinutes: appConfig.phoneNumberVerificationOtpExpiryMinutes,
       }),
     });
   }
-  if (firstName) identityUpdationObj.firstName = firstName;
-  if (lastName) identityUpdationObj.lastName = lastName;
-  if (username) identityUpdationObj.username = username;
-  if (gender) identityUpdationObj.gender = gender;
-
-  const updated = await prisma.identity.update({
-    where: {
-      id: isIdentityExists.id,
-    },
-    data: identityUpdationObj,
-  });
-  if (!updated) {
-    throw new BadRequestError(
-      "failed to update identity.",
-      "failed to update",
-      "FAILED_TO_UPDATE_IDENTITY",
-    );
-  }
-  const { passwordHash, otherDetails } = updated;
   return res.status(200).json(
-    ApiResponse.success("Identity updated successfully.", {
-      otherDetails,
-      isOtpSentToEmail,
-      isOtpSentToPhoneNumber,
+    ApiResponse.success(`Identity updated.`, {
+      ...responseObject,
     }),
   );
 });
@@ -428,7 +494,7 @@ export const changeIdentityStatus = asyncHandler(async (req, res) => {
       "IDENTITY_NOT_FOUND",
     );
   }
-  // const { status } = ;
+
   if (
     !req.body?.status ||
     !IDENTITY_STATUSES.includes(req.body.status.toUpperCase())

@@ -131,6 +131,8 @@ export const verifyEmailService = async (identity, otp) => {
       data: {
         verifiedAt: now,
         attempts,
+        oldTargetValue:
+          type === VerificationType.EMAIL_CHANGE ? identity.email : null,
       },
     });
     return updatedIdentity;
@@ -220,6 +222,9 @@ export const verifyPhoneNumberService = async (identity, otp) => {
         id: record.id,
       },
       data: updatedData,
+      select: {
+        id: true,
+      },
     });
     if (attempts >= record.maxAttempts) {
       throw new BadRequestError(
@@ -255,6 +260,11 @@ export const verifyPhoneNumberService = async (identity, otp) => {
       data: {
         verifiedAt: now,
         attempts,
+        oldTargetValue:
+          type === VerificationType.PHONE_CHANGE ? identity.phoneNumber : null,
+      },
+      select: {
+        id: true,
       },
     });
     return updatedIdentity;
@@ -396,7 +406,7 @@ export const resendVerficationCodeOnPhone = async (identity) => {
     });
   });
   const isOtpSentToPhoneNumber = await mailSender({
-    to: targetValue,
+    to: identity.email,
     subject: "Phone number verification",
     html: emailVerificationOtpTemplate({
       firstName: identity.firstName,
